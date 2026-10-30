@@ -137,39 +137,122 @@
         <!-- SECTION 2: PHONICS -->
         <section id="section-phonics" class="hidden space-y-6">
             <div class="glow-card rounded-2xl p-6 bg-white border border-slate-200">
-                <h2 class="text-2xl font-extrabold text-slate-900">看字讀音 (Phonics 自然發音)</h2>
-                <p class="text-slate-600 text-sm mt-1">掌握拼讀規則，看到陌生單字就能推算出發音。</p>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h2 class="text-2xl font-extrabold text-slate-900 flex items-center gap-2">
+                            看字讀音 (Phonics 自然發音完整規則)
+                        </h2>
+                        <p class="text-slate-600 text-sm mt-1">
+                            建立「字母/字母組合 (Graphemes)」與「音素 (Phonemes)」的直覺對應，掌握 80%+ 英語單字的自然拼讀密碼。
+                        </p>
+                    </div>
+                    <!-- Category Filter Buttons -->
+                    <div class="flex items-center gap-2 flex-wrap" id="phonicsCategoryBtns">
+                        <button onclick="filterPhonicsRules('all')" id="phonics-cat-all" class="phonics-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-xs border border-indigo-600">全部規則</button>
+                        <button onclick="filterPhonicsRules('magicE')" id="phonics-cat-magicE" class="phonics-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200">Magic E 魔術 E</button>
+                        <button onclick="filterPhonicsRules('vowelTeams')" id="phonics-cat-vowelTeams" class="phonics-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200">母音組合 (Vowel Teams)</button>
+                        <button onclick="filterPhonicsRules('rControlled')" id="phonics-cat-rControlled" class="phonics-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200">R 捲舌母音</button>
+                        <button onclick="filterPhonicsRules('digraphs')" id="phonics-cat-digraphs" class="phonics-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200">雙輔音組合</button>
+                        <button onclick="filterPhonicsRules('silent')" id="phonics-cat-silent" class="phonics-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200">靜音字母 (Silent)</button>
+                    </div>
+                </div>
             </div>
+
+            <!-- Phonics Cards Container -->
             <div id="phonicsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
         </section>
 
         <!-- SECTION 3: AI ANALYZER -->
         <section id="section-analyzer" class="hidden space-y-6">
             <div class="glow-card rounded-2xl p-6 bg-white border border-slate-200 space-y-4">
-                <h2 class="text-2xl font-extrabold text-slate-900 flex items-center gap-2">
-                    <i data-lucide="wand2" class="w-6 h-6 text-pink-600"></i> AI 英文連音與重音分析器
-                </h2>
-                <div class="flex gap-2">
-                    <input type="text" id="customInputSentence" value="I would like to order a cup of coffee." class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-sm font-medium focus:outline-none focus:border-indigo-500">
-                    <button onclick="analyzeCustomSentence()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm rounded-xl shadow-md whitespace-nowrap">
-                        分析 Analyze
-                    </button>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h2 class="text-2xl font-extrabold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="wand2" class="w-6 h-6 text-pink-600"></i> AI 英文連音與重音深度解析器
+                        </h2>
+                        <p class="text-slate-600 text-sm mt-1">
+                            輸入任何英文句子，系統將自動分析「輔音+母音連音」、「母音+母音滑音」、「Flap T 閃音」、「Schwa 弱讀音」與句子節奏重音！
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <div id="analyzerResultBox" class="glow-card rounded-2xl p-6 bg-white border border-slate-200 space-y-4">
-                <h3 id="analyzerOriginalText" class="text-xl font-extrabold text-slate-900">I would like to order a cup of coffee.</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                        <span class="text-xs font-bold text-indigo-600 block mb-1">連音劃分 (Linking)</span>
-                        <div id="analyzerLinkingText" class="text-sm font-black text-slate-800 font-mono">I-would-like-to or-de-ra cup-of cof-fee</div>
+
+                <div class="space-y-3">
+                    <div class="flex gap-2">
+                        <input type="text" id="customInputSentence" value="I would like to order a cup of coffee." placeholder="輸入句子，例如：What are you doing later?" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-sm font-medium focus:outline-none focus:border-indigo-500 shadow-inner">
+                        <button onclick="analyzeCustomSentence()" class="px-6 py-3 bg-gradient-to-r from-pink-600 to-indigo-600 hover:from-pink-700 hover:to-indigo-700 text-white font-extrabold text-sm rounded-xl shadow-md flex items-center gap-2 whitespace-nowrap transform active:scale-95 transition-all cursor-pointer">
+                            <i data-lucide="sparkles" class="w-4 h-4"></i> 開始解析 Analyze
+                        </button>
                     </div>
-                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                        <span class="text-xs font-bold text-purple-600 block mb-1">重音節 (Stress)</span>
-                        <div id="analyzerStressText" class="text-sm font-bold text-slate-800">I would LIKE to ORDER a CUP of COFFEE</div>
+                    <!-- Presets (擴充至 20+ 個高頻實用情境句庫) -->
+                    <div class="space-y-2 pt-2 border-t border-slate-100">
+                        <div class="flex items-center justify-between">
+                            <span class="font-extrabold text-xs text-indigo-700 flex items-center gap-1">
+                                <i data-lucide="list" class="w-3.5 h-3.5"></i> 快速選擇高頻實用例句 (20+ 句型庫)：
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-1.5 flex-wrap text-xs text-slate-600 font-medium max-h-40 overflow-y-auto p-2 bg-slate-50 rounded-xl border border-slate-200" id="analyzerPresetContainer">
+                            <button onclick="setCustomSentence('Check it out right now.')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">1. Check it out right now.</button>
+                            <button onclick="setCustomSentence('Nice to meet you all.')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">2. Nice to meet you all.</button>
+                            <button onclick="setCustomSentence('I have to go out for a walk.')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">3. I have to go out for a walk.</button>
+                            <button onclick="setCustomSentence('What are you going to do?')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">4. What are you going to do?</button>
+                            <button onclick="setCustomSentence('I would like to order a cup of coffee.')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">5. I would like to order a cup of coffee.</button>
+                            <button onclick="setCustomSentence('Could you give me a hand with this?')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">6. Could you give me a hand with this?</button>
+                            <button onclick="setCustomSentence('Turn off the light when you leave.')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">7. Turn off the light when you leave.</button>
+                            <button onclick="setCustomSentence('What time does the train arrive?')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">8. What time does the train arrive?</button>
+                            <button onclick="setCustomSentence('I am going to take a break.')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">9. I am going to take a break.</button>
+                            <button onclick="setCustomSentence('Pick it up as soon as possible.')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">10. Pick it up as soon as possible.</button>
+                            <button onclick="setCustomSentence('Would you mind opening the window?')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">11. Would you mind opening the window?</button>
+                            <button onclick="setCustomSentence('I need to ask you a question.')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">12. I need to ask you a question.</button>
+                            <button onclick="setCustomSentence('Let us figure it out together.')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">13. Let us figure it out together.</button>
+                            <button onclick="setCustomSentence('How are you feeling today?')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">14. How are you feeling today?</button>
+                            <button onclick="setCustomSentence('Take it easy and relax.')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">15. Take it easy and relax.</button>
+                            <button onclick="setCustomSentence('Where did you buy that shirt?')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">16. Where did you buy that shirt?</button>
+                            <button onclick="setCustomSentence('Call me back when you are free.')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">17. Call me back when you are free.</button>
+                            <button onclick="setCustomSentence('I am really looking forward to it.')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">18. I am really looking forward to it.</button>
+                            <button onclick="setCustomSentence('Do you know what I mean?')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">19. Do you know what I mean?</button>
+                            <button onclick="setCustomSentence('She has a lot of experience.')" class="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-700 border border-slate-200 transition-colors cursor-pointer font-bold">20. She has a lot of experience.</button>
+                        </div>
                     </div>
-                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                        <span class="text-xs font-bold text-emerald-600 block mb-1">建議語調 (Intonation)</span>
-                        <div id="analyzerPitchText" class="text-sm font-bold text-slate-800">直述句 句尾降調 ↘</div>
+                </div>
+
+                <!-- Analysis Results Dashboard Display (補齊缺失的 ID 容器) -->
+                <div id="analyzerResultsCard" class="p-6 bg-slate-900 rounded-2xl text-white space-y-5 border border-slate-800 shadow-inner mt-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <span class="text-xs font-extrabold uppercase tracking-wider text-pink-400 flex items-center gap-1.5">
+                            <i data-lucide="sparkles" class="w-4 h-4"></i> AI 語音分析報告 (Analysis Report)
+                        </span>
+                        <button onclick="playCustomSentenceSpeech()" class="px-3.5 py-1.5 bg-pink-600 hover:bg-pink-700 text-white font-extrabold text-xs rounded-xl shadow-md flex items-center gap-1.5 transition-all cursor-pointer">
+                            <i data-lucide="volume-2" class="w-4 h-4"></i> 播放整句發音 (Listen)
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <!-- 1. 原句與強弱讀重音 -->
+                        <div class="p-4 bg-slate-800/90 rounded-xl border border-slate-700/80 space-y-2">
+                            <span class="text-[10px] font-extrabold text-amber-400 uppercase tracking-wider block">1. 實詞重讀 (Content Words vs. Weak Forms)</span>
+                            <p id="analyzerStressText" class="text-sm font-bold text-slate-100 leading-relaxed">Check it out right now.</p>
+                            <span class="text-[10px] text-slate-400 block mt-1">黃色標記為語意核心實詞 (Content Words)，須重讀強讀。</span>
+                        </div>
+
+                        <!-- 2. 連音符號與口語標註 -->
+                        <div class="p-4 bg-slate-800/90 rounded-xl border border-slate-700/80 space-y-2">
+                            <span class="text-[10px] font-extrabold text-indigo-400 uppercase tracking-wider block">2. 連音與音變標註 (Linking & Assimilation)</span>
+                            <p id="analyzerLinkingText" class="text-sm font-bold text-indigo-300 font-mono">Check_it_out right_now</p>
+                            <p id="analyzerLinkingDesc" class="text-[11px] text-slate-300 leading-relaxed font-medium">💡 輔音+母音連讀，/t/ 自動轉換為美音 Flap T /d/。</p>
+                        </div>
+
+                        <!-- 3. 連讀語音 IPA -->
+                        <div class="p-4 bg-slate-800/90 rounded-xl border border-slate-700/80 space-y-2">
+                            <span class="text-[10px] font-extrabold text-pink-400 uppercase tracking-wider block">3. 口語連讀 IPA 音標 (Connected Speech IPA)</span>
+                            <p id="analyzerIpaText" class="text-sm font-bold text-pink-300 font-mono">/tʃek ɪ daʊt raɪt naʊ/</p>
+                            <p id="analyzerOriginalText" class="hidden">Check it out right now.</p>
+                        </div>
+
+                        <!-- 4. 建議語調起伏 -->
+                        <div class="p-4 bg-slate-800/90 rounded-xl border border-slate-700/80 space-y-2">
+                            <span class="text-[10px] font-extrabold text-emerald-400 uppercase tracking-wider block">4. 語調起伏曲線 (Pitch Contour)</span>
+                            <p id="analyzerPitchText" class="text-xs text-slate-200 leading-relaxed font-medium">↘ 祈使句/強調句: 句尾降調結尾。</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -186,24 +269,56 @@
 
         <!-- SECTION 5: GAMES & QUIZ -->
         <section id="section-quiz" class="hidden space-y-6">
-            <div class="glow-card rounded-2xl p-6 bg-white border border-slate-200 flex justify-between items-center">
+            <div class="glow-card rounded-2xl p-6 bg-white border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <h2 class="text-2xl font-extrabold text-slate-900">聽力辨音小測驗 (Phoneme Quiz)</h2>
-                    <p class="text-slate-600 text-sm mt-1">播放語音並選出正確的音標！</p>
+                    <h2 class="text-2xl font-extrabold text-slate-900 flex items-center gap-2">
+                        聽力辨音與最小對立題庫 <span class="text-xs px-3 py-1 bg-purple-100 text-purple-700 rounded-full font-bold">30+ Quiz Questions</span>
+                    </h2>
+                    <p class="text-slate-600 text-sm mt-1">聽音辨題！挑戰你的英文耳朵，可選擇單音標測驗或易混淆單字對比。</p>
                 </div>
-                <div class="bg-indigo-50 border border-indigo-200 px-4 py-2 rounded-xl text-center">
-                    <span class="text-xs font-bold text-indigo-600 block">目前得分 Score</span>
-                    <span id="quizScore" class="text-2xl font-black text-indigo-900">0</span>
+                
+                <!-- Game Mode Selector & Score Tracker -->
+                <div class="flex items-center gap-4 flex-wrap">
+                    <div class="flex bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
+                        <button id="quizModePhoneme" onclick="setQuizMode('phoneme')" class="px-3 py-1.5 rounded-lg bg-white text-indigo-700 shadow-xs border border-slate-200">單音標測驗</button>
+                        <button id="quizModePair" onclick="setQuizMode('pair')" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900">最小對立單字</button>
+                    </div>
+
+                    <div class="flex items-center gap-3 bg-indigo-50 border border-indigo-200 px-4 py-2 rounded-xl">
+                        <div class="text-center">
+                            <span class="text-[10px] font-bold text-indigo-600 block">得分 Score</span>
+                            <span id="quizScore" class="text-xl font-black text-indigo-900">0</span>
+                        </div>
+                        <div class="w-px h-6 bg-indigo-200"></div>
+                        <div class="text-center">
+                            <span class="text-[10px] font-bold text-amber-600 block">連勝 Streak</span>
+                            <span id="quizStreak" class="text-xl font-black text-amber-600">0 🔥</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="glow-card rounded-2xl p-6 bg-white border border-slate-200 space-y-5 max-w-xl mx-auto">
-                <div class="text-center py-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-                    <button onclick="playQuizSound()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm rounded-xl shadow-md inline-flex items-center gap-2">
-                        <i data-lucide="volume-2" class="w-5 h-5"></i> 播放發音 Listen
+
+            <!-- Main Interactive Quiz Card -->
+            <div class="glow-card rounded-2xl p-6 bg-white border border-slate-200 space-y-5 max-w-xl mx-auto shadow-sm">
+                <div class="flex justify-between items-center text-xs text-slate-500 font-bold border-b border-slate-100 pb-2">
+                    <span id="quizTypeBadge" class="bg-indigo-50 text-indigo-700 border border-indigo-200 px-2.5 py-0.5 rounded-md">單音標聽力辨析</span>
+                    <button onclick="initQuiz()" class="text-indigo-600 hover:text-indigo-800 flex items-center gap-1 font-bold">
+                        <i data-lucide="refresh-cw" class="w-3.5 h-3.5 inline"></i> 換一題 Next
                     </button>
                 </div>
-                <div id="quizOptions" class="grid grid-cols-2 gap-3"></div>
-                <div id="quizFeedback" class="hidden p-3 rounded-xl text-xs font-bold text-center"></div>
+
+                <div class="text-center py-6 bg-slate-50/80 rounded-xl border border-slate-200/80 space-y-3">
+                    <p id="quizPromptText" class="text-xs text-slate-500 font-medium">點擊下方按鈕重複聆聽示範語音，並選出正確選項：</p>
+                    <button onclick="playQuizSound()" class="px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm rounded-2xl shadow-md shadow-indigo-600/20 inline-flex items-center gap-2 transform active:scale-95 transition-all cursor-pointer">
+                        <i data-lucide="volume-2" class="w-5 h-5"></i> 播放發音 (Listen Sound)
+                    </button>
+                </div>
+
+                <div id="quizOptions" class="grid grid-cols-2 gap-3">
+                    <!-- Dynamic rendering of quiz choices -->
+                </div>
+
+                <div id="quizFeedback" class="hidden p-3.5 rounded-xl text-xs font-bold text-center"></div>
             </div>
         </section>
     </main>
@@ -215,143 +330,701 @@
 
     <!-- JavaScript Execution Block -->
     <script>
-        // Data sets
+        // Complete 44 IPA Phoneme Data Sets with Detailed Articulations and Practice Words
         const VOWELS = [
-            { symbol: '/iː/', type: '長母音', example: 'see', ipa: 'siː', desc: '嘴角向兩側拉開，像微笑狀發長音。' },
-            { symbol: '/ɪ/', type: '短母音', example: 'sit', ipa: 'sɪt', desc: '嘴唇放鬆，舌尖抵下齒後方發短音。' },
-            { symbol: '/e/', type: '短母音', example: 'bed', ipa: 'bed', desc: '嘴巴張開約一指寬，舌尖抵下齒。' },
-            { symbol: '/æ/', type: '短母音', example: 'cat', ipa: 'kæt', desc: '嘴巴大張約兩指寬，發出「阿-誒」融合音。' },
-            { symbol: '/ɑː/', type: '長母音', example: 'car', ipa: 'kɑːr', desc: '嘴巴張大放鬆，舌頭拉後發長音。' },
-            { symbol: '/ɔː/', type: '長母音', example: 'door', ipa: 'dɔːr', desc: '嘴唇收圓向前突出，發長音。' }
+            // 單母音 (Monophthongs)
+            { 
+                symbol: '/iː/', 
+                type: '長母音', 
+                example: 'see', 
+                ipa: 'siː', 
+                desc: '【長音 嘴角張開】嘴角強烈向兩邊拉開像微笑狀，舌尖抵住下齒背，舌前部儘量向硬顎抬高，發長而清脆的「一」音。',
+                words: [{w: 'see', ipa: 'siː'}, {w: 'team', ipa: 'tiːm'}, {w: 'believe', ipa: 'bɪˈliːv'}, {w: 'key', ipa: 'kiː'}]
+            },
+            { 
+                symbol: '/ɪ/', 
+                type: '短母音', 
+                example: 'sit', 
+                ipa: 'sɪt', 
+                desc: '【短音 肌肉放鬆】嘴角放鬆微開約一指寬，舌尖抵住下齒背，舌前部稍抬起。發音短促輕快，介於「一」與「誒」之間。',
+                words: [{w: 'sit', ipa: 'sɪt'}, {w: 'big', ipa: 'bɪɡ'}, {w: 'busy', ipa: 'ˈbɪz.i'}, {w: 'gym', ipa: 'dʒɪm'}]
+            },
+            { 
+                symbol: '/e/', 
+                type: '短母音', 
+                example: 'bed', 
+                ipa: 'bed', 
+                desc: '【短音 一指寬】嘴唇向兩側微張約一指半寬，舌尖抵下齒背，舌位比 /ɪ/ 稍低。短促發出類似中文「誒」的聲音。',
+                words: [{w: 'bed', ipa: 'bed'}, {w: 'head', ipa: 'hed'}, {w: 'friend', ipa: 'frend'}, {w: 'many', ipa: 'ˈmen.i'}]
+            },
+            { 
+                symbol: '/æ/', 
+                type: '短母音', 
+                example: 'cat', 
+                ipa: 'kæt', 
+                desc: '【短音 兩指大口】嘴巴向下張大至兩指寬，嘴角向兩側拉開，舌尖抵下齒背，舌前部低平，聲帶震動發出「阿-誒」結合音。',
+                words: [{w: 'cat', ipa: 'kæt'}, {w: 'apple', ipa: 'ˈæp.əl'}, {w: 'hand', ipa: 'hænd'}, {w: 'back', ipa: 'bæk'}]
+            },
+            { 
+                symbol: '/ɑː/', 
+                type: '長母音', 
+                example: 'car', 
+                ipa: 'kɑːr', 
+                desc: '【長音 大張口】嘴巴自然張大呈圓形，舌頭平放並稍微向後縮，發出飽滿深沉的「啊」長音。',
+                words: [{w: 'car', ipa: 'kɑːr'}, {w: 'father', ipa: 'ˈfɑː.ðər'}, {w: 'start', ipa: 'stɑːrt'}, {w: 'heart', ipa: 'hɑːrt'}]
+            },
+            { 
+                symbol: '/ɒ/', 
+                type: '短母音', 
+                example: 'hot', 
+                ipa: 'hɒt', 
+                desc: '【短音 稍微圓唇】嘴巴張大略呈縱橢圓形，雙唇稍微收圓，舌後部微抬，發出短促的「喔」音（美式常轉為 /ɑː/）。',
+                words: [{w: 'hot', ipa: 'hɒt'}, {w: 'box', ipa: 'bɒks'}, {w: 'stop', ipa: 'stɒp'}, {w: 'rock', ipa: 'rɒk'}]
+            },
+            { 
+                symbol: '/ɔː/', 
+                type: '長母音', 
+                example: 'door', 
+                ipa: 'dɔːr', 
+                desc: '【長音 圓唇向前】雙唇收圓並用力向前突出，舌後部抬高，聲帶震動發出長而渾厚的「喔」音。',
+                words: [{w: 'door', ipa: 'dɔːr'}, {w: 'water', ipa: 'ˈwɔː.tər'}, {w: 'call', ipa: 'kɔːl'}, {w: 'law', ipa: 'lɔː'}]
+            },
+            { 
+                symbol: '/ʊ/', 
+                type: '短母音', 
+                example: 'book', 
+                ipa: 'bʊk', 
+                desc: '【短音 微圓放鬆】雙唇微圓向外突出但保持放鬆，舌後部向軟顎抬起，短促發出「烏」音。',
+                words: [{w: 'book', ipa: 'bʊk'}, {w: 'foot', ipa: 'fʊt'}, {w: 'put', ipa: 'pʊt'}, {w: 'good', ipa: 'ɡʊd'}]
+            },
+            { 
+                symbol: '/uː/', 
+                type: '長母音', 
+                example: 'too', 
+                ipa: 'tuː', 
+                desc: '【長音 緊繃小圓唇】雙唇用力收圓成小圓孔並向前突出，舌後部大幅抬高，發出長而緊繃的「烏」音。',
+                words: [{w: 'too', ipa: 'tuː'}, {w: 'food', ipa: 'fuːd'}, {w: 'blue', ipa: 'bluː'}, {w: 'group', ipa: 'ɡruːp'}]
+            },
+            { 
+                symbol: '/ʌ/', 
+                type: '短母音', 
+                example: 'cup', 
+                ipa: 'kʌp', 
+                desc: '【短音 半開放鬆】嘴巴半開放鬆，舌尖不抵下齒，舌中部微微抬起。發音短促乾脆，類似含糊的「啊」。',
+                words: [{w: 'cup', ipa: 'kʌp'}, {w: 'love', ipa: 'lʌv'}, {w: 'sun', ipa: 'sʌn'}, {w: 'bus', ipa: 'bʌs'}]
+            },
+            { 
+                symbol: '/ɜː/', 
+                type: '長母音', 
+                example: 'bird', 
+                ipa: 'bɜːd', 
+                desc: '【長音 舌位居中】嘴唇微開呈扁平狀，舌身平放口腔中央，聲帶震動發長音（美式發音會帶強烈捲舌音 /ɝ/）。',
+                words: [{w: 'bird', ipa: 'bɜːd'}, {w: 'work', ipa: 'wɜːk'}, {w: 'learn', ipa: 'lɜːn'}, {w: 'turn', ipa: 'tɜːn'}]
+            },
+            { 
+                symbol: '/ə/', 
+                type: '弱母音', 
+                example: 'about', 
+                ipa: 'əˈbaʊt', 
+                desc: '【中央弱讀音】英語中最常見的中央弱讀音（Schwa）。口型完全放鬆，短促輕聲發出「額」音。',
+                words: [{w: 'about', ipa: 'əˈbaʊt'}, {w: 'banana', ipa: 'bəˈnæn.ə'}, {w: 'doctor', ipa: 'ˈdɒk.tər'}, {w: 'paper', ipa: 'ˈpeɪ.pər'}]
+            },
+            // 雙母音 (Diphthongs)
+            { 
+                symbol: '/eɪ/', 
+                type: '雙母音', 
+                example: 'say', 
+                ipa: 'seɪ', 
+                desc: '【由 /e/ 滑向 /ɪ/】開口由半開滑向微合，嘴角向兩邊拉開，滑動過程連貫光滑。',
+                words: [{w: 'say', ipa: 'seɪ'}, {w: 'make', ipa: 'meɪk'}, {w: 'day', ipa: 'deɪ'}, {w: 'train', ipa: 'treɪn'}]
+            },
+            { 
+                symbol: '/aɪ/', 
+                type: '雙母音', 
+                example: 'my', 
+                ipa: 'maɪ', 
+                desc: '【由 /a/ 滑向 /ɪ/】嘴巴先張大發 /a/，隨後快速滑向 /ɪ/，開口由大變小。',
+                words: [{w: 'my', ipa: 'maɪ'}, {w: 'time', ipa: 'taɪm'}, {w: 'high', ipa: 'haɪ'}, {w: 'like', ipa: 'laɪk'}]
+            },
+            { 
+                symbol: '/ɔɪ/', 
+                type: '雙母音', 
+                example: 'boy', 
+                ipa: 'bɔɪ', 
+                desc: '【由 /ɔ/ 滑向 /ɪ/】雙唇先收圓發 /ɔ/，隨後張開滑向扁唇 /ɪ/。',
+                words: [{w: 'boy', ipa: 'bɔɪ'}, {w: 'voice', ipa: 'vɔɪs'}, {w: 'oil', ipa: 'ɔɪl'}, {w: 'point', ipa: 'pɔɪnt'}]
+            },
+            { 
+                symbol: '/aʊ/', 
+                type: '雙母音', 
+                example: 'now', 
+                ipa: 'naʊ', 
+                desc: '【由 /a/ 滑向 /ʊ/】嘴巴先張大發 /a/，隨後收圓雙唇向前突出滑向 /ʊ/。',
+                words: [{w: 'now', ipa: 'naʊ'}, {w: 'house', ipa: 'haʊs'}, {w: 'out', ipa: 'aʊt'}, {w: 'cow', ipa: 'kaʊ'}]
+            },
+            { 
+                symbol: '/əʊ/', 
+                type: '雙母音', 
+                example: 'go', 
+                ipa: 'ɡəʊ', 
+                desc: '【由 /ə/ 滑向 /ʊ/】嘴唇先半開放鬆，隨後收圓滑向 /ʊ/（美式發音標為 /oʊ/）。',
+                words: [{w: 'go', ipa: 'ɡəʊ'}, {w: 'home', ipa: 'həʊm'}, {w: 'know', ipa: 'nəʊ'}, {w: 'cold', ipa: 'kəʊld'}]
+            },
+            { 
+                symbol: '/ɪə/', 
+                type: '雙母音', 
+                example: 'near', 
+                ipa: 'nɪər', 
+                desc: '【由 /ɪ/ 滑向 /ə/】先發短音 /ɪ/，隨後嘴唇放鬆滑向中央弱讀音 /ə/。',
+                words: [{w: 'near', ipa: 'nɪər'}, {w: 'ear', ipa: 'ɪər'}, {w: 'here', ipa: 'hɪər'}, {w: 'clear', ipa: 'klɪər'}]
+            },
+            { 
+                symbol: '/eə/', 
+                type: '雙母音', 
+                example: 'hair', 
+                ipa: 'heər', 
+                desc: '【由 /e/ 滑向 /ə/】嘴唇半開先發 /e/，隨後向口腔中央放鬆滑向 /ə/。',
+                words: [{w: 'hair', ipa: 'heər'}, {w: 'bear', ipa: 'beər'}, {w: 'care', ipa: 'keər'}, {w: 'air', ipa: 'eər'}]
+            },
+            { 
+                symbol: '/ʊə/', 
+                type: '雙母音', 
+                example: 'tour', 
+                ipa: 'tʊər', 
+                desc: '【由 /ʊ/ 滑向 /ə/】雙唇先微圓發 /ʊ/，隨後張開放鬆滑向中央音 /ə/。',
+                words: [{w: 'tour', ipa: 'tʊər'}, {w: 'poor', ipa: 'pʊər'}, {w: 'sure', ipa: 'ʃʊər'}, {w: 'cure', ipa: 'kjʊər'}]
+            }
         ];
 
         const CONSONANTS = [
-            { symbol: '/p/', type: '清輔音', example: 'pen', ipa: 'pen', desc: '雙唇緊閉後快速張開爆破出氣。' },
-            { symbol: '/b/', type: '濁輔音', example: 'bad', ipa: 'bæd', desc: '雙唇緊閉帶動聲帶振動爆破。' },
-            { symbol: '/t/', type: '清輔音', example: 'tea', ipa: 'tiː', desc: '舌尖抵上齒齦爆破出氣。' },
-            { symbol: '/d/', type: '濁輔音', example: 'dog', ipa: 'dɔːɡ', desc: '舌尖抵上齒齦，振動聲帶爆破。' },
-            { symbol: '/k/', type: '清輔音', example: 'cat', ipa: 'kæt', desc: '舌根抵軟顎爆破出氣。' },
-            { symbol: '/ɡ/', type: '濁輔音', example: 'go', ipa: 'ɡoʊ', desc: '舌根抵軟顎，振動聲帶爆破。' }
+            // 爆破音 (Plosives)
+            { 
+                symbol: '/p/', 
+                type: '清輔音', 
+                example: 'pen', 
+                ipa: 'pen', 
+                desc: '【雙唇緊閉 爆破出氣】雙唇緊閉阻斷氣流，隨後突然張開，讓氣流衝出。聲帶不振動。',
+                words: [{w: 'pen', ipa: 'pen'}, {w: 'park', ipa: 'pɑːrk'}, {w: 'apple', ipa: 'ˈæp.əl'}, {w: 'stop', ipa: 'stɒp'}]
+            },
+            { 
+                symbol: '/b/', 
+                type: '濁輔音', 
+                example: 'bad', 
+                ipa: 'bæd', 
+                desc: '【雙唇緊閉 聲帶振動】口型與 /p/ 相同，但雙唇張開爆破的同時帶動聲帶強烈振動。',
+                words: [{w: 'bad', ipa: 'bæd'}, {w: 'book', ipa: 'bʊk'}, {w: 'baby', ipa: 'ˈbeɪ.bi'}, {w: 'job', ipa: 'dʒɒb'}]
+            },
+            { 
+                symbol: '/t/', 
+                type: '清輔音', 
+                example: 'tea', 
+                ipa: 'tiː', 
+                desc: '【舌尖抵上齒齦 爆破】舌尖緊貼上齒齦形成阻礙，隨後舌尖突然彈開衝出氣流。聲帶不振動。',
+                words: [{w: 'tea', ipa: 'tiː'}, {w: 'top', ipa: 'tɒp'}, {w: 'time', ipa: 'taɪm'}, {w: 'cat', ipa: 'kæt'}]
+            },
+            { 
+                symbol: '/d/', 
+                type: '濁輔音', 
+                example: 'dog', 
+                ipa: 'dɔːɡ', 
+                desc: '【舌尖抵上齒齦 聲帶振動】口型與 /t/ 相同，舌尖彈開的同時帶動聲帶強烈振動。',
+                words: [{w: 'dog', ipa: 'dɔːɡ'}, {w: 'day', ipa: 'deɪ'}, {w: 'door', ipa: 'dɔːr'}, {w: 'red', ipa: 'red'}]
+            },
+            { 
+                symbol: '/k/', 
+                type: '清輔音', 
+                example: 'cat', 
+                ipa: 'kæt', 
+                desc: '【舌根抵軟顎 爆破】舌後部抬高緊貼軟顎形成阻礙，隨後突然離開釋放氣流。聲帶不振動。',
+                words: [{w: 'cat', ipa: 'kæt'}, {w: 'key', ipa: 'kiː'}, {w: 'king', ipa: 'kɪŋ'}, {w: 'book', ipa: 'bʊk'}]
+            },
+            { 
+                symbol: '/ɡ/', 
+                type: '濁輔音', 
+                example: 'go', 
+                ipa: 'ɡoʊ', 
+                desc: '【舌根抵軟顎 聲帶振動】口型與 /k/ 相同，舌根離開軟顎時帶動聲帶強烈振動。',
+                words: [{w: 'go', ipa: 'ɡoʊ'}, {w: 'girl', ipa: 'ɡɜːrl'}, {w: 'get', ipa: 'ɡet'}, {w: 'big', ipa: 'bɪɡ'}]
+            },
+            // 摩擦音 (Fricatives)
+            { 
+                symbol: '/f/', 
+                type: '清輔音', 
+                example: 'fish', 
+                ipa: 'fɪʃ', 
+                desc: '【上齒輕咬下唇 吹氣】上門齒輕輕接觸下唇內側，氣流從縫隙中摩擦擠出。聲帶不振動。',
+                words: [{w: 'fish', ipa: 'fɪʃ'}, {w: 'food', ipa: 'fuːd'}, {w: 'phone', ipa: 'fəʊn'}, {w: 'life', ipa: 'laɪf'}]
+            },
+            { 
+                symbol: '/v/', 
+                type: '濁輔音', 
+                example: 'van', 
+                ipa: 'væn', 
+                desc: '【上齒輕咬下唇 聲帶振動】口型與 /f/ 相同，上齒咬下唇摩擦擠出氣流的同時發出聲帶振動。',
+                words: [{w: 'van', ipa: 'væn'}, {w: 'voice', ipa: 'vɔɪs'}, {w: 'love', ipa: 'lʌv'}, {w: 'very', ipa: 'ˈver.i'}]
+            },
+            { 
+                symbol: '/θ/', 
+                type: '清輔音', 
+                example: 'think', 
+                ipa: 'θɪŋk', 
+                desc: '【咬舌吹氣】舌尖微微伸出夾在上扁上下齒之間，強行吹出氣流產生摩擦音。聲帶不振動。',
+                words: [{w: 'think', ipa: 'θɪŋk'}, {w: 'thank', ipa: 'θæŋk'}, {w: 'three', ipa: 'θriː'}, {w: 'math', ipa: 'mæθ'}]
+            },
+            { 
+                symbol: '/ð/', 
+                type: '濁輔音', 
+                example: 'this', 
+                ipa: 'ðɪs', 
+                desc: '【咬舌 聲帶振動】口型與 /θ/ 相同，舌尖伸出上下齒間，吹氣的同時帶動聲帶振動。',
+                words: [{w: 'this', ipa: 'ðɪs'}, {w: 'that', ipa: 'ðæt'}, {w: 'mother', ipa: 'ˈmʌð.ər'}, {w: 'with', ipa: 'wɪð'}]
+            },
+            { 
+                symbol: '/s/', 
+                type: '清輔音', 
+                example: 'sun', 
+                ipa: 'sʌn', 
+                desc: '【齒縫吹氣 絲絲聲】上下齒自然靠攏，舌尖靠近上齒齦，氣流從狹縫中擠出產生清脆嘶嘶聲。',
+                words: [{w: 'sun', ipa: 'sʌn'}, {w: 'see', ipa: 'siː'}, {w: 'city', ipa: 'ˈsɪt.i'}, {w: 'bus', ipa: 'bʌs'}]
+            },
+            { 
+                symbol: '/z/', 
+                type: '濁輔音', 
+                example: 'zoo', 
+                ipa: 'zuː', 
+                desc: '【齒縫吹氣 蜂鳴聲】口型與 /s/ 相同，氣流擠出齒縫的同時帶動聲帶發出類似蜜蜂飛行的嗡嗡聲。',
+                words: [{w: 'zoo', ipa: 'zuː'}, {w: 'zero', ipa: 'ˈzɪə.rəʊ'}, {w: 'music', ipa: 'ˈmjuː.zɪk'}, {w: 'size', ipa: 'saɪs'}]
+            },
+            { 
+                symbol: '/ʃ/', 
+                type: '清輔音', 
+                example: 'she', 
+                ipa: 'ʃiː', 
+                desc: '【雙唇微噘 噓聲】雙唇稍微向前突出微噘，舌尖抬高靠近齒齦後部，發出安靜「噓」的聲音。',
+                words: [{w: 'she', ipa: 'ʃiː'}, {w: 'ship', ipa: 'ʃɪp'}, {w: 'shoe', ipa: 'ʃuː'}, {w: 'wash', ipa: 'wɒʃ'}]
+            },
+            { 
+                symbol: '/ʒ/', 
+                type: '濁輔音', 
+                example: 'vision', 
+                ipa: 'ˈvɪʒ.ən', 
+                desc: '【雙唇微噘 聲帶振動】口型與 /ʃ/ 相同，雙唇微噘吹出氣流的同時，帶動聲帶振動。',
+                words: [{w: 'vision', ipa: 'ˈvɪʒ.ən'}, {w: 'measure', ipa: 'ˈmeʒ.ər'}, {w: 'casual', ipa: 'ˈkæʒ.u.əl'}, {w: 'genre', ipa: 'ˈʒɑːn.rə'}]
+            },
+            { 
+                symbol: '/h/', 
+                type: '清輔音', 
+                example: 'hat', 
+                ipa: 'hæt', 
+                desc: '【聲門哈氣】嘴巴張開，氣流順暢通過放鬆的聲門發出自然哈氣聲。聲帶不振動。',
+                words: [{w: 'hat', ipa: 'hæt'}, {w: 'hot', ipa: 'hɒt'}, {w: 'home', ipa: 'həʊm'}, {w: 'help', ipa: 'help'}]
+            },
+            // 破擦音 (Affricates)
+            { 
+                symbol: '/tʃ/', 
+                type: '清輔音', 
+                example: 'chin', 
+                ipa: 'tʃɪn', 
+                desc: '【爆破加摩擦】雙唇微噘，舌尖抵住上齒齦後部，隨後快速彈開擠出氣流發出「吃」音。',
+                words: [{w: 'chin', ipa: 'tʃɪn'}, {w: 'chair', ipa: 'tʃeər'}, {w: 'check', ipa: 'tʃek'}, {w: 'watch', ipa: 'wɒtʃ'}]
+            },
+            { 
+                symbol: '/dʒ/', 
+                type: '濁輔音', 
+                example: 'joy', 
+                ipa: 'dʒɔɪ', 
+                desc: '【爆破加摩擦 聲帶振動】口型與 /tʃ/ 相同，舌尖彈開摩擦擠出氣流的同時帶動聲帶振動。',
+                words: [{w: 'joy', ipa: 'dʒɔɪ'}, {w: 'job', ipa: 'dʒɒb'}, {w: 'jump', ipa: 'dʒʌmp'}, {w: 'page', ipa: 'peɪdʒ'}]
+            },
+            // 鼻音 (Nasals)
+            { 
+                symbol: '/m/', 
+                type: '鼻音', 
+                example: 'man', 
+                ipa: 'mæn', 
+                desc: '【雙唇緊閉 鼻腔共鳴】雙唇緊閉，軟顎下垂堵住口腔，氣流完全從鼻腔發出，帶動聲帶振動。',
+                words: [{w: 'man', ipa: 'mæn'}, {w: 'moon', ipa: 'muːn'}, {w: 'time', ipa: 'taɪm'}, {w: 'name', ipa: 'neɪm'}]
+            },
+            { 
+                symbol: '/n/', 
+                type: '鼻音', 
+                example: 'no', 
+                ipa: 'nəʊ', 
+                desc: '【舌尖抵上齒齦 鼻音】嘴巴微開，舌尖緊貼上齒齦堵住口腔，氣流從鼻腔出來，帶動聲帶振動。',
+                words: [{w: 'no', ipa: 'nəʊ'}, {w: 'name', ipa: 'neɪm'}, {w: 'night', ipa: 'naɪt'}, {w: 'pen', ipa: 'pen'}]
+            },
+            { 
+                symbol: '/ŋ/', 
+                type: '鼻音', 
+                example: 'sing', 
+                ipa: 'sɪŋ', 
+                desc: '【舌根抵軟顎 後鼻音】嘴巴張開，舌後部高抬緊貼軟顎封住口腔，氣流從鼻腔發出共鳴音。',
+                words: [{w: 'sing', ipa: 'sɪŋ'}, {w: 'king', ipa: 'kɪŋ'}, {w: 'long', ipa: 'lɒŋ'}, {w: 'bank', ipa: 'bæŋk'}]
+            },
+            // 流音與半母音 (Approximants & Glides)
+            { 
+                symbol: '/l/', 
+                type: '流音', 
+                example: 'leg', 
+                ipa: 'leɡ', 
+                desc: '【舌尖抵齒齦 氣流繞側】舌尖緊抵上齒齦，氣流從舌頭兩側順暢繞出。分清晰音與暗音 [ɫ]。',
+                words: [{w: 'leg', ipa: 'leɡ'}, {w: 'love', ipa: 'lʌv'}, {w: 'light', ipa: 'laɪt'}, {w: 'full', ipa: 'fʊl'}]
+            },
+            { 
+                symbol: '/r/', 
+                type: '流音', 
+                example: 'red', 
+                ipa: 'red', 
+                desc: '【舌尖捲起不接觸】雙唇微噘收圓，舌尖向後上方捲起但決不接觸上顎，聲帶振動發音。',
+                words: [{w: 'red', ipa: 'red'}, {w: 'run', ipa: 'rʌn'}, {w: 'rain', ipa: 'reɪn'}, {w: 'car', ipa: 'kɑːr'}]
+            },
+            { 
+                symbol: '/j/', 
+                type: '半母音', 
+                example: 'yes', 
+                ipa: 'jes', 
+                desc: '【舌前抬高 滑向母音】舌前部高抬靠近硬顎，隨後極快速滑向後續的母音，聲帶振動。',
+                words: [{w: 'yes', ipa: 'jes'}, {w: 'you', ipa: 'juː'}, {w: 'yellow', ipa: 'ˈjel.əʊ'}, {w: 'use', ipa: 'juːz'}]
+            },
+            { 
+                symbol: '/w/', 
+                type: '半母音', 
+                example: 'wet', 
+                ipa: 'wet', 
+                desc: '【雙唇極度收圓 滑向母音】雙唇收成極小圓孔向前突出，隨後快速張開滑向後續母音。',
+                words: [{w: 'wet', ipa: 'wet'}, {w: 'water', ipa: 'ˈwɔː.tər'}, {w: 'win', ipa: 'wɪn'}, {w: 'work', ipa: 'wɜːk'}]
+            }
         ];
 
-        const PHONICS_RULES = [
-            { rule: 'Magic E (靜音 E 變長音)', desc: '當字尾有不發音的 e 時，前面的母音發長音。', examples: ['cap ➔ cake', 'hop ➔ hope', 'fin ➔ fine'] },
-            { rule: 'Vowel Teams (雙母音組合)', desc: '兩個母音相連時，通常第一個發長音，第二個不發音。', examples: ['rain', 'boat', 'meat'] }
+        // 完整詳細 Phonics 自然發音規則資料庫
+        const PHONICS_RULES_DETAILED = [
+            {
+                category: 'magicE',
+                rule: 'Magic E (靜音 E 變長母音)',
+                ipa: 'a_e /eɪ/, i_e /aɪ/, o_e /əʊ/, u_e /juː/',
+                desc: '當單字結構為「母音 + 子音 + 不發音的 e」時，字尾的 e 保持靜音，但會發揮魔力將前面的短母音變為「字母本身的名稱長母音」。',
+                mechanism: '【發音對比】cap /kæt/ ➔ cake /keɪk/；hop /hɒp/ ➔ hope /həʊp/；fin /fɪn/ ➔ fine /faɪn/。',
+                examples: [
+                    { w: 'cake', ipa: '/keɪk/' },
+                    { w: 'fine', ipa: '/faɪn/' },
+                    { w: 'hope', ipa: '/həʊp/' },
+                    { w: 'cute', ipa: '/kjuːt/' }
+                ]
+            },
+            {
+                category: 'vowelTeams',
+                rule: 'AI / AY 字母組合 ➔ /eɪ/',
+                ipa: '/eɪ/ (長音 A)',
+                desc: '當字母 a 與 i、y 相連時，組合發長音 /eɪ/。通常 ai 出現於字中，ay 出現於字尾。',
+                mechanism: '【記憶口訣】"When two vowels go walking, the first one does the talking." (第一個母音發長音，第二個不發音)。',
+                examples: [
+                    { w: 'rain', ipa: '/reɪn/' },
+                    { w: 'train', ipa: '/treɪn/' },
+                    { w: 'day', ipa: '/deɪ/' },
+                    { w: 'play', ipa: '/pleɪ/' }
+                ]
+            },
+            {
+                category: 'vowelTeams',
+                rule: 'EE / EA 字母組合 ➔ /iː/',
+                ipa: '/iː/ (長音 E)',
+                desc: 'ee 與 ea 組合通常發長音 /iː/。嘴唇向兩側拉開呈微笑狀，聲帶拉長發音。',
+                mechanism: '【注意】少數 ea 組合會發短音 /e/（如 head /hed/、bread /bred/）。',
+                examples: [
+                    { w: 'see', ipa: '/siː/' },
+                    { w: 'seed', ipa: '/siːd/' },
+                    { w: 'team', ipa: '/tiːm/' },
+                    { w: 'read', ipa: '/riːd/' }
+                ]
+            },
+            {
+                category: 'vowelTeams',
+                rule: 'OA / OW 字母組合 ➔ /əʊ/',
+                ipa: '/əʊ/ 或 /oʊ/',
+                desc: 'oa 與 ow 出現於字中或字尾時，常見發長音 /əʊ/（如 boat, snow）。',
+                mechanism: '【注意】ow 有時發雙母音 /aʊ/（如 cow /kaʊ/, now /naʊ/）。',
+                examples: [
+                    { w: 'boat', ipa: '/bəʊt/' },
+                    { w: 'coat', ipa: '/kəʊt/' },
+                    { w: 'snow', ipa: '/snəʊ/' },
+                    { w: 'window', ipa: '/ˈwɪn.dəʊ/' }
+                ]
+            },
+            {
+                category: 'rControlled',
+                rule: 'AR 捲舌母音組合 ➔ /ɑːr/',
+                ipa: '/ɑːr/',
+                desc: '母音 a 接上 r 時，發音嘴巴張大成圓形，舌尖向後下方縮並帶有捲舌音。',
+                mechanism: '【發音要領】雙唇微張放鬆，舌頭後縮，氣流飽滿順暢。',
+                examples: [
+                    { w: 'car', ipa: '/kɑːr/' },
+                    { w: 'park', ipa: '/pɑːrk/' },
+                    { w: 'start', ipa: '/stɑːrt/' },
+                    { w: 'smart', ipa: '/smɑːrt/' }
+                ]
+            },
+            {
+                category: 'rControlled',
+                rule: 'ER / IR / UR 捲舌組合 ➔ /ɜːr/',
+                ipa: '/ɜːr/',
+                desc: '字母 e, i, u 與 r 組合時，發音高度一致，皆發中央捲舌長母音 /ɜːr/。',
+                mechanism: '【發音要領】嘴唇扁平半開，舌身平放口腔中央，舌尖微捲。',
+                examples: [
+                    { w: 'bird', ipa: '/bɜːrd/' },
+                    { w: 'her', ipa: '/hɜːr/' },
+                    { w: 'turn', ipa: '/tɜːrn/' },
+                    { w: 'nurse', ipa: '/nɜːrs/' }
+                ]
+            },
+            {
+                category: 'digraphs',
+                rule: 'SH 雙輔音 ➔ /ʃ/',
+                ipa: '/ʃ/ (清輔音)',
+                desc: 's 與 h 組合失去原本個別讀音，組合成「噓」的摩擦清音。',
+                mechanism: '【發音要領】雙唇稍微向前突出微噘，舌尖接近上齒齦後部吹氣。',
+                examples: [
+                    { w: 'ship', ipa: '/ʃɪp/' },
+                    { w: 'fish', ipa: '/fɪʃ/' },
+                    { w: 'shoe', ipa: '/ʃuː/' },
+                    { w: 'wash', ipa: '/wɒʃ/' }
+                ]
+            },
+            {
+                category: 'digraphs',
+                rule: 'TH 咬舌雙輔音 ➔ /θ/ 或 /ð/',
+                ipa: '/θ/ (清音) / /ð/ (濁音)',
+                desc: 't 與 h 組合時，舌尖必須伸出上下齒之間輕咬吹氣。分為清音（think）與濁音（this）。',
+                mechanism: '【發音要領】切記舌尖必須露出齒縫，不可讀成 /s/ 或 /f/。',
+                examples: [
+                    { w: 'think', ipa: '/θɪŋk/' },
+                    { w: 'this', ipa: '/ðɪs/' },
+                    { w: 'thank', ipa: '/θæŋk/' },
+                    { w: 'mother', ipa: '/ˈmʌð.ər/' }
+                ]
+            },
+            {
+                category: 'silent',
+                rule: 'KN 靜音 K 組合 ➔ /n/',
+                ipa: '/n/ (K 不發音)',
+                desc: '當 k 位於字首且後面緊接 n 時，k 保持靜音不發聲，直接讀 /n/ 音。',
+                mechanism: '【實例解析】know 讀 /nəʊ/；knife 讀 /naɪf/。',
+                examples: [
+                    { w: 'know', ipa: '/nəʊ/' },
+                    { w: 'knife', ipa: '/naɪf/' },
+                    { w: 'knee', ipa: '/niː/' },
+                    { w: 'knight', ipa: '/naɪt/' }
+                ]
+            },
+            {
+                category: 'silent',
+                rule: 'MB / BT 靜音 B 組合 ➔ /m/ 或 /t/',
+                ipa: '/m/ 或 /t/ (B 不發音)',
+                desc: '當字尾出現 mb 組合或 bt 連接時，字母 b 不發音。',
+                mechanism: '【實例解析】climb 讀 /klaɪm/；doubt 讀 /daʊt/。',
+                examples: [
+                    { w: 'climb', ipa: '/klaɪm/' },
+                    { w: 'lamb', ipa: '/læm/' },
+                    { w: 'comb', ipa: '/kəʊm/' },
+                    { w: 'doubt', ipa: '/daʊt/' }
+                ]
+            },
+            {
+                category: 'silent',
+                rule: 'WR 靜音 W 組合 ➔ /r/',
+                ipa: '/r/ (W 不發音)',
+                desc: '當 w 位於字首且後面緊接 r 時，w 完全不發音，直接發捲舌音 /r/。',
+                mechanism: '【實例解析】write 讀 /raɪt/；wrong 讀 /rɒŋ/。',
+                examples: [
+                    { w: 'write', ipa: '/raɪt/' },
+                    { w: 'wrong', ipa: '/rɒŋ/' },
+                    { w: 'wrist', ipa: '/rɪst/' },
+                    { w: 'wrap', ipa: '/ræp/' }
+                ]
+            },
+            {
+                category: 'silent',
+                rule: 'LK / LF / LM 靜音 L 組合 ➔ /k/, /f/, /m/',
+                ipa: 'L 靜音不發聲',
+                desc: '當字母 l 位於 a/o 後且後面緊接 k, f, m 時，l 通常保持靜音。',
+                mechanism: '【實例解析】talk 讀 /tɔːk/；half 讀 /hɑːf/；calm 讀 /kɑːm/。',
+                examples: [
+                    { w: 'talk', ipa: '/tɔːk/' },
+                    { w: 'walk', ipa: '/wɔːk/' },
+                    { w: 'half', ipa: '/hɑːf/' },
+                    { w: 'calm', ipa: '/kɑːm/' }
+                ]
+            },
+            {
+                category: 'silent',
+                rule: 'GN 靜音 G 組合 ➔ /n/',
+                ipa: '/n/ (G 不發音)',
+                desc: '當 g 與 n 連用（不論在字首或字尾）時，g 保持靜音，只讀 /n/ 音。',
+                mechanism: '【實例解析】sign 讀 /saɪn/；design 讀 /dɪˈzaɪn/。',
+                examples: [
+                    { w: 'sign', ipa: '/saɪn/' },
+                    { w: 'design', ipa: '/dɪˈzaɪn/' },
+                    { w: 'foreign', ipa: '/ˈfɒr.ən/' },
+                    { w: 'gnome', ipa: '/nəʊm/' }
+                ]
+            },
+            {
+                category: 'silent',
+                rule: 'GH / WH 靜音 H 組合 ➔ /ɡ/ 或不發音',
+                ipa: 'H 不發音',
+                desc: '當 h 跟隨在 g 或特定 w 之後，或者處於特定字首時，字母 h 保持靜音。',
+                mechanism: '【實例解析】ghost 讀 /ɡəʊst/；honest 讀 /ˈɒn.ɪst/；hour 讀 /ˈaʊər/。',
+                examples: [
+                    { w: 'ghost', ipa: '/ɡəʊst/' },
+                    { w: 'honest', ipa: '/ˈɒn.ɪst/' },
+                    { w: 'hour', ipa: '/ˈaʊər/' },
+                    { w: 'rhyme', ipa: '/raɪm/' }
+                ]
+            },
+            {
+                category: 'silent',
+                rule: 'PS / PN 靜音 P 組合 ➔ /s/ 或 /n/',
+                ipa: 'P 靜音不發聲',
+                desc: '源自希臘文的外來字中，字首 ps, pn 或字中的 pt（如 receipt）中的 p 不發音。',
+                mechanism: '【實例解析】psychology 讀 /saɪˈkɒl.ə.dʒi/；receipt 讀 /rɪˈsiːt/。',
+                examples: [
+                    { w: 'psychology', ipa: '/saɪˈkɒl.ə.dʒi/' },
+                    { w: 'receipt', ipa: '/rɪˈsiːt/' },
+                    { w: 'pneumonia', ipa: '/njuːˈməʊ.ni.ə/' },
+                    { w: 'psalm', ipa: '/sɑːm/' }
+                ]
+            },
+            {
+                category: 'silent',
+                rule: 'Island / Aisle 靜音 S 組合 ➔ S 不發音',
+                ipa: 'S 靜音不發聲 (/ˈaɪ.lənd/)',
+                desc: '在 island (島嶼)、aisle (走道) 等字詞中，字母 s 保持完全靜音！切勿將 island 錯讀成 "ice-land"。',
+                mechanism: '【實例解析】island 讀 /ˈaɪ.lənd/；aisle 讀 /aɪl/；debris 讀 /ˈdeɪ.briː/。',
+                examples: [
+                    { w: 'island', ipa: '/ˈaɪ.lənd/' },
+                    { w: 'aisle', ipa: '/aɪl/' },
+                    { w: 'debris', ipa: '/ˈdeɪ.briː/' },
+                    { w: 'viscount', ipa: '/ˈvaɪ.kaʊnt/' }
+                ]
+            },
+            {
+                category: 'silent',
+                rule: 'STLE / STEN 靜音 T 組合 ➔ /səl/ 或 /sən/',
+                ipa: 'T 不發音',
+                desc: '當 t 出現於 -stle 或 -sten 字尾結構中時，字母 t 通常不發音。',
+                mechanism: '【實例解析】listen 讀 /ˈlɪs.ən/；castle 讀 /ˈkɑː.səl/。',
+                examples: [
+                    { w: 'listen', ipa: '/ˈlɪs.ən/' },
+                    { w: 'castle', ipa: '/ˈkɑː.səl/' },
+                    { w: 'fasten', ipa: '/ˈfɑː.sən/' },
+                    { w: 'whistle', ipa: '/ˈwɪs.əl/' }
+                ]
+            }
         ];
 
-        const INTONATIONS = [
-            { title: '陳述句 降調 (Falling Pitch ↘)', text: 'I live in New York.', desc: '普通陳述句與句尾結尾時語調自然下降。' },
-            { title: 'Yes/No 疑問句 升調 (Rising Pitch ↗)', text: 'Are you ready?', desc: '回答只需 Yes 或 No 的疑問句，句尾語調上升。' }
-        ];
-
-        let quizTarget = null;
-        let score = 0;
-
-        // TTS Pronunciation
-        function speakWord(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const rate = parseFloat(document.getElementById('speechRate')?.value || 0.8);
-                const lang = document.getElementById('accentSelect')?.value || 'en-US';
-                const u = new SpeechSynthesisUtterance(text);
-                u.rate = rate;
-                u.lang = lang;
-                window.speechSynthesis.speak(u);
-            }
-        }
-
-        function switchTab(tabId) {
-            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(b => {
-                b.classList.remove('bg-indigo-50', 'text-indigo-700', 'border', 'border-indigo-200/80', 'shadow-sm');
-                b.classList.add('text-slate-600');
-            });
-
-            const activeSection = document.getElementById('section-' + tabId);
-            const activeTabBtn = document.getElementById('tab-' + tabId);
-
-            if (activeSection) activeSection.classList.remove('hidden');
-            if (activeTabBtn) {
-                activeTabBtn.classList.add('bg-indigo-50', 'text-indigo-700', 'border', 'border-indigo-200/80', 'shadow-sm');
-                activeTabBtn.classList.remove('text-slate-600');
-            }
-        }
-
-        function renderChart() {
-            const vContainer = document.getElementById('vowelContainer');
-            const cContainer = document.getElementById('consonantContainer');
-
-            if (vContainer) {
-                vContainer.innerHTML = VOWELS.map(v => `
-                    <div class="glow-card p-4 rounded-xl border border-slate-200 transition-all text-center space-y-2 relative group hover:border-indigo-400">
-                        <span class="text-2xl font-black text-indigo-600 font-mono block cursor-pointer" onclick="speakWord('${v.example}')" title="播放音標代表字發音">${v.symbol}</span>
-                        
-                        <!-- 直接可按的單字發音按鈕 -->
-                        <button onclick="speakWord('${v.example}')" class="w-full py-1.5 px-2 bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 shadow-xs border border-indigo-100">
-                            <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
-                            <span>${v.example}</span>
-                            <span class="text-[10px] opacity-80 font-mono">[${v.ipa}]</span>
-                        </button>
-                        
-                        <p class="text-[11px] text-slate-500 leading-tight pt-1">${v.desc}</p>
-                    </div>
-                `).join('');
-            }
-
-            if (cContainer) {
-                cContainer.innerHTML = CONSONANTS.map(c => `
-                    <div class="glow-card p-4 rounded-xl border border-slate-200 transition-all text-center space-y-2 relative group hover:border-purple-400">
-                        <span class="text-2xl font-black text-purple-600 font-mono block cursor-pointer" onclick="speakWord('${c.example}')" title="播放音標代表字發音">${c.symbol}</span>
-                        
-                        <!-- 直接可按的單字發音按鈕 -->
-                        <button onclick="speakWord('${c.example}')" class="w-full py-1.5 px-2 bg-purple-50 hover:bg-purple-600 text-purple-700 hover:text-white rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 shadow-xs border border-purple-100">
-                            <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
-                            <span>${c.example}</span>
-                            <span class="text-[10px] opacity-80 font-mono">[${c.ipa}]</span>
-                        </button>
-                        
-                        <p class="text-[11px] text-slate-500 leading-tight pt-1">${c.desc}</p>
-                    </div>
-                `).join('');
-            }
-            if (window.lucide) window.lucide.createIcons();
-        }
+        let currentPhonicsCategory = 'all';
 
         function renderPhonics() {
             const container = document.getElementById('phonicsContainer');
-            if (container) {
-                container.innerHTML = PHONICS_RULES.map(p => `
-                    <div class="glow-card p-6 rounded-2xl border border-slate-200 space-y-3">
-                        <h3 class="text-lg font-extrabold text-slate-900">${p.rule}</h3>
-                        <p class="text-xs text-slate-600">${p.desc}</p>
-                        <div class="flex gap-2 flex-wrap">
+            if (!container) return;
+
+            const list = currentPhonicsCategory === 'all' 
+                ? PHONICS_RULES_DETAILED 
+                : PHONICS_RULES_DETAILED.filter(r => r.category === currentPhonicsCategory);
+
+            container.innerHTML = list.map(p => `
+                <div class="glow-card p-6 rounded-2xl border border-slate-200 space-y-4 hover:border-indigo-400 transition-all">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                        <div>
+                            <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-100 font-mono">${p.ipa}</span>
+                            <h3 class="text-lg font-extrabold text-slate-900 mt-1">${p.rule}</h3>
+                        </div>
+                    </div>
+
+                    <p class="text-xs text-slate-600 leading-relaxed font-medium">${p.desc}</p>
+                    
+                    <div class="p-3 bg-indigo-50/60 rounded-xl border border-indigo-100 text-xs font-semibold text-indigo-900 leading-relaxed">
+                        💡 ${p.mechanism}
+                    </div>
+
+                    <div class="space-y-1.5 pt-1">
+                        <span class="text-[10px] text-slate-400 font-bold block">代表性單字試聽：</span>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
                             ${p.examples.map(ex => `
-                                <button onclick="speakWord('${ex.replace(/[^a-zA-Z]/g, '')}')" class="px-3 py-1.5 bg-indigo-50 border border-indigo-200 text-indigo-900 text-xs font-bold rounded-xl hover:bg-indigo-100">
-                                    🔊 ${ex}
+                                <button onclick="speakWord('${ex.w}')" class="py-2 px-2 bg-slate-50 hover:bg-indigo-600 text-slate-800 hover:text-white rounded-xl text-xs font-bold transition-all flex flex-col items-center justify-center border border-slate-200 shadow-2xs cursor-pointer group" title="播放 '${ex.w}' 發音">
+                                    <span class="font-bold">${ex.w}</span>
+                                    <span class="text-[10px] font-mono opacity-70 group-hover:opacity-90">${ex.ipa}</span>
                                 </button>
                             `).join('')}
                         </div>
                     </div>
-                `).join('');
+                </div>
+            `).join('');
+
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function filterPhonicsRules(category) {
+            currentPhonicsCategory = category;
+            document.querySelectorAll('.phonics-btn').forEach(btn => {
+                btn.className = 'phonics-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200';
+            });
+
+            const activeBtn = document.getElementById('phonics-cat-' + category);
+            if (activeBtn) {
+                activeBtn.className = 'phonics-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-xs border border-indigo-600';
             }
+
+            renderPhonics();
         }
 
         function renderIntonation() {
             const container = document.getElementById('intonationGrid');
             if (container) {
                 container.innerHTML = INTONATIONS.map(i => `
-                    <div class="glow-card p-6 rounded-2xl border border-slate-200 space-y-3">
-                        <h3 class="text-base font-extrabold text-slate-900">${i.title}</h3>
-                        <p class="text-xs text-slate-500">${i.desc}</p>
-                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center">
-                            <span class="text-base font-black text-indigo-900">"${i.text}"</span>
-                            <button onclick="speakWord('${i.text}')" class="p-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700">
-                                🔊
+                    <div class="glow-card p-6 rounded-2xl border border-slate-200 space-y-4 hover:border-emerald-400 transition-all">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full ${i.type === 'rising' ? 'bg-indigo-500' : i.type === 'falling' ? 'bg-emerald-500' : 'bg-amber-500'}"></span>
+                                ${i.title}
+                            </h3>
+                            <button onclick="speakWord('${i.text}')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs flex items-center gap-1.5 cursor-pointer">
+                                <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> 聽語調示範
                             </button>
+                        </div>
+                        
+                        <p class="text-xs text-slate-600 font-medium leading-relaxed">${i.desc}</p>
+                        
+                        <!-- SVG 音高語調動態曲線 (Intonation Wave SVG) -->
+                        <div class="p-4 bg-slate-900 rounded-2xl border border-slate-800 space-y-3 relative overflow-hidden shadow-inner">
+                            <div class="flex items-center justify-between text-[10px] font-mono font-bold text-slate-400 border-b border-slate-800/80 pb-1.5">
+                                <span>High (高音節)</span>
+                                <span>Pitch Contour (語調軌跡線)</span>
+                                <span>Low (低音節)</span>
+                            </div>
+
+                            <div class="relative h-20 w-full flex items-center">
+                                <svg class="w-full h-full absolute inset-0 overflow-visible" viewBox="0 0 300 80" preserveAspectRatio="none">
+                                    <!-- 背景輔助音高線 -->
+                                    <line x1="0" y1="20" x2="300" y2="20" stroke="#334155" stroke-dasharray="3 3" stroke-width="1"/>
+                                    <line x1="0" y1="60" x2="300" y2="60" stroke="#334155" stroke-dasharray="3 3" stroke-width="1"/>
+                                    
+                                    <!-- 語調平滑曲線 (Glowing Curve Line) -->
+                                    <path d="${i.path}" fill="none" stroke="#10b981" stroke-width="3.5" stroke-linecap="round" class="filter drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                                </svg>
+                            </div>
+
+                            <!-- 句子單字對齊音高對應 -->
+                            <div class="flex justify-between items-center text-xs font-bold text-emerald-300 font-mono pt-1">
+                                <span class="bg-slate-800 px-2 py-1 rounded border border-slate-700 text-white">"${i.text}"</span>
+                                <span class="text-[11px] text-emerald-400 bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-800/60 font-mono">
+                                    ${i.type === 'rising' ? '↗ 句尾升調' : i.type === 'falling' ? '↘ 句尾降調' : i.type === 'riseFall' ? '↗↘ 先升後降' : '↘↗ 先降後升'}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 `).join('');
             }
+            if (window.lucide) window.lucide.createIcons();
         }
 
         function analyzeCustomSentence() {
@@ -408,12 +1081,507 @@
             }
         }
 
+        function setQuizMode(mode) {
+            quizMode = mode;
+            const btnPhoneme = document.getElementById('quizModePhoneme');
+            const btnPair = document.getElementById('quizModePair');
+            const badge = document.getElementById('quizTypeBadge');
+
+            if (mode === 'phoneme') {
+                btnPhoneme.className = 'px-3 py-1.5 rounded-lg bg-white text-indigo-700 shadow-xs border border-slate-200';
+                btnPair.className = 'px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900';
+                badge.innerText = '單音標聽力辨析';
+            } else {
+                btnPair.className = 'px-3 py-1.5 rounded-lg bg-white text-indigo-700 shadow-xs border border-slate-200';
+                btnPhoneme.className = 'px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900';
+                badge.innerText = '最小對立單字辨析 (Minimal Pairs)';
+            }
+            initQuiz();
+        }
+
+        function initQuiz() {
+            const optionsContainer = document.getElementById('quizOptions');
+            const feedback = document.getElementById('quizFeedback');
+            if (feedback) feedback.classList.add('hidden');
+
+            if (quizMode === 'phoneme') {
+                const all = [...VOWELS, ...CONSONANTS];
+                quizTarget = all[Math.floor(Math.random() * all.length)];
+
+                const options = [quizTarget];
+                while (options.length < 4) {
+                    const rand = all[Math.floor(Math.random() * all.length)];
+                    if (!options.includes(rand)) options.push(rand);
+                }
+                options.sort(() => Math.random() - 0.5);
+
+                if (optionsContainer) {
+                    optionsContainer.innerHTML = options.map(o => `
+                        <button onclick="checkQuiz('${o.symbol}')" class="p-3.5 bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 rounded-xl text-xl font-black text-slate-800 font-mono transition-all cursor-pointer">
+                            ${o.symbol}
+                        </button>
+                    `).join('');
+                }
+            } else {
+                // Pair mode
+                const pairObj = MINIMAL_PAIRS_QUIZ[Math.floor(Math.random() * MINIMAL_PAIRS_QUIZ.length)];
+                quizTarget = pairObj;
+
+                if (optionsContainer) {
+                    optionsContainer.innerHTML = `
+                        <button onclick="checkQuiz('${pairObj.wordA}')" class="p-4 bg-slate-50 hover:bg-purple-50 border border-slate-200 hover:border-purple-300 rounded-xl text-left space-y-1 transition-all cursor-pointer">
+                            <span class="text-lg font-black text-slate-900 block">${pairObj.wordA}</span>
+                            <span class="text-xs font-mono text-purple-600 font-bold">${pairObj.ipaA}</span>
+                        </button>
+                        <button onclick="checkQuiz('${pairObj.wordB}')" class="p-4 bg-slate-50 hover:bg-purple-50 border border-slate-200 hover:border-purple-300 rounded-xl text-left space-y-1 transition-all cursor-pointer">
+                            <span class="text-lg font-black text-slate-900 block">${pairObj.wordB}</span>
+                            <span class="text-xs font-mono text-purple-600 font-bold">${pairObj.ipaB}</span>
+                        </button>
+                    `;
+                }
+            }
+        }
+
+        function playQuizSound() {
+            if (!quizTarget) return;
+            if (quizMode === 'phoneme') {
+                speakWord(quizTarget.example);
+            } else {
+                speakWord(quizTarget.target);
+            }
+        }
+
+        function checkQuiz(selected) {
+            const feedback = document.getElementById('quizFeedback');
+            if (!feedback) return;
+
+            feedback.classList.remove('hidden');
+            let isCorrect = false;
+
+            if (quizMode === 'phoneme') {
+                isCorrect = (selected === quizTarget.symbol);
+            } else {
+                isCorrect = (selected === quizTarget.target);
+            }
+
+            if (isCorrect) {
+                score += 10;
+                streak += 1;
+                document.getElementById('quizScore').innerText = score;
+                document.getElementById('quizStreak').innerText = `${streak} 🔥`;
+                
+                feedback.className = 'p-3.5 rounded-xl text-xs font-bold text-center bg-emerald-100 text-emerald-800 border border-emerald-200';
+                feedback.innerText = '🎉 答對了！發音辨識非常精準！';
+                setTimeout(initQuiz, 1200);
+            } else {
+                streak = 0;
+                document.getElementById('quizStreak').innerText = '0 🔥';
+                feedback.className = 'p-3.5 rounded-xl text-xs font-bold text-center bg-rose-100 text-rose-800 border border-rose-200';
+                
+                if (quizMode === 'phoneme') {
+                    feedback.innerText = `❌ 再試一次！正確答案是 ${quizTarget.symbol} (代表字: ${quizTarget.example})`;
+                } else {
+                    feedback.innerText = `❌ 再試一次！目標單字是 "${quizTarget.target}" (${quizTarget.hint})`;
+                }
+            }
+        }
+
         window.onload = function() {
             if (window.lucide) window.lucide.createIcons();
             renderChart();
             renderPhonics();
             renderIntonation();
             initQuiz();
+        };
+
+        // Complete renderChart function implementation
+        function renderChart() {
+            const vowelBox = document.getElementById('vowelContainer');
+            const consonantBox = document.getElementById('consonantContainer');
+
+            if (vowelBox) {
+                vowelBox.innerHTML = VOWELS.map(v => `
+                    <div class="glow-card p-4 rounded-2xl border border-slate-200 hover:border-indigo-500 transition-all space-y-2 bg-white flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-100">${v.type}</span>
+                                <button onclick="speakWord('${PHONEME_PRONUNCIATION_MAP[v.symbol] || v.example}')" class="text-indigo-600 hover:text-indigo-800 p-1 rounded-lg hover:bg-indigo-50 transition-colors cursor-pointer" title="播放 /${v.symbol}/ 音標音素">
+                                    <i data-lucide="volume-2" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                            <button onclick="speakWord('${PHONEME_PRONUNCIATION_MAP[v.symbol] || v.example}')" class="text-2xl font-black text-slate-900 font-mono my-1 hover:text-indigo-600 transition-colors block text-left cursor-pointer" title="點擊聆聽音標 /${v.symbol}/ 發音">
+                                ${v.symbol}
+                            </button>
+                            <p class="text-[11px] text-slate-500 font-medium leading-relaxed">${v.desc}</p>
+                        </div>
+                        <div class="pt-2 border-t border-slate-100 space-y-1">
+                            <span class="text-[10px] text-slate-400 font-bold block">代表單字：</span>
+                            <div class="grid grid-cols-2 gap-1.5">
+                                ${v.words.map(w => `
+                                    <button onclick="speakWord('${w.w}')" class="px-2 py-1 bg-slate-50 hover:bg-indigo-600 text-slate-800 hover:text-white rounded-lg text-[11px] font-bold transition-all flex items-center justify-between border border-slate-200/80 cursor-pointer group">
+                                        <span>${w.w}</span>
+                                        <span class="text-[9px] font-mono text-slate-400 group-hover:text-indigo-100">${w.ipa}</span>
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            if (consonantBox) {
+                consonantBox.innerHTML = CONSONANTS.map(c => `
+                    <div class="glow-card p-4 rounded-2xl border border-slate-200 hover:border-purple-500 transition-all space-y-2 bg-white flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-100">${c.type}</span>
+                                <button onclick="speakWord('${PHONEME_PRONUNCIATION_MAP[c.symbol] || c.example}')" class="text-purple-600 hover:text-purple-800 p-1 rounded-lg hover:bg-purple-50 transition-colors cursor-pointer" title="播放 /${c.symbol}/ 音標音素">
+                                    <i data-lucide="volume-2" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                            <button onclick="speakWord('${PHONEME_PRONUNCIATION_MAP[c.symbol] || c.example}')" class="text-2xl font-black text-slate-900 font-mono my-1 hover:text-purple-600 transition-colors block text-left cursor-pointer" title="點擊聆聽音標 /${c.symbol}/ 發音">
+                                ${c.symbol}
+                            </button>
+                            <p class="text-[11px] text-slate-500 font-medium leading-relaxed">${c.desc}</p>
+                        </div>
+                        <div class="pt-2 border-t border-slate-100 space-y-1">
+                            <span class="text-[10px] text-slate-400 font-bold block">代表單字：</span>
+                            <div class="grid grid-cols-2 gap-1.5">
+                                ${c.words.map(w => `
+                                    <button onclick="speakWord('${w.w}')" class="px-2 py-1 bg-slate-50 hover:bg-purple-600 text-slate-800 hover:text-white rounded-lg text-[11px] font-bold transition-all flex items-center justify-between border border-slate-200/80 cursor-pointer group">
+                                        <span>${w.w}</span>
+                                        <span class="text-[9px] font-mono text-slate-400 group-hover:text-purple-100">${w.ipa}</span>
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function setCustomSentence(str) {
+            const input = document.getElementById('customInputSentence');
+            if (input) {
+                input.value = str;
+                analyzeCustomSentence();
+            }
+        }
+
+        function playCustomSentenceSpeech() {
+            const input = document.getElementById('customInputSentence');
+            if (input && input.value) {
+                speakWord(input.value);
+            }
+        }
+
+        function analyzeCustomSentence() {
+            const inputEl = document.getElementById('customInputSentence');
+            if (!inputEl) return;
+            const input = inputEl.value.trim();
+            if (!input) return;
+
+            const origEl = document.getElementById('analyzerOriginalText');
+            if (origEl) origEl.innerText = input;
+            
+            const lower = input.toLowerCase().replace(/[.,?!]/g, '');
+
+            // Detailed Phonetic Breakdown Dictionary for 20+ Sentence Presets
+            const ANALYZER_DATABASE = {
+                'check it out right now': {
+                    linking: 'Check_it_out right_now',
+                    desc: '💡 經典連讀：Check-it-out 順讀為 /tʃek-ɪ-daʊt/，其中 /t/ 在兩個母音間自動轉換為美音 Flap T /d/。',
+                    stress: '<mark class="bg-amber-200 px-1 rounded text-slate-900">CHECK</mark> it <mark class="bg-amber-200 px-1 rounded text-slate-900">OUT</mark> <mark class="bg-amber-200 px-1 rounded text-slate-900">RIGHT</mark> <mark class="bg-amber-200 px-1 rounded text-slate-900">NOW</mark>',
+                    ipa: '/tʃek ɪ daʊt raɪt naʊ/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↘ 祈使強調句: 強烈降調</span><span class="text-slate-300 font-medium block">OUT 與 NOW 雙重高音爆發結尾。</span>'
+                },
+                'nice to meet you all': {
+                    linking: 'Nice-to meet_you_all',
+                    desc: '💡 音變同化 (Assimilation)：meet you 中的 /t/ + /j/ 融合成破擦音 /tʃ/，讀作 "mee-choo-all"。',
+                    stress: '<mark class="bg-amber-200 px-1 rounded text-slate-900">NICE</mark> to <mark class="bg-amber-200 px-1 rounded text-slate-900">MEET</mark> you <mark class="bg-amber-200 px-1 rounded text-slate-900">ALL</mark>',
+                    ipa: '/naɪs tə miːtʃu ɔːl/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↗↘ 熱情親切問候語調</span><span class="text-slate-300 font-medium block">MEET 處達到最高峰，ALL 平緩降調。</span>'
+                },
+                'i have to go out for a walk': {
+                    linking: 'I-have-to go(w)out for-a walk',
+                    desc: '💡 母音+母音滑音 (V+V Glide)：go /ɡəʊ/ 與 out /aʊt/ 銜接時，中間產生隱形半母音 /(w)/ 滑音，發出 "go-wout"。',
+                    stress: 'I have to <mark class="bg-amber-200 px-1 rounded text-slate-900">GO</mark> <mark class="bg-amber-200 px-1 rounded text-slate-900">OUT</mark> for a <mark class="bg-amber-200 px-1 rounded text-slate-900">WALK</mark>',
+                    ipa: '/aɪ hæv tə ɡəʊ waʊt fər ə wɔːk/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↘ 陳述句句尾降調</span><span class="text-slate-300 font-medium block">for a 弱讀為 /fər ə/，WALK 重讀降調。</span>'
+                },
+                'what are you going to do': {
+                    linking: 'Whada-ya gon-na do',
+                    desc: '💡 口語極度縮讀 (Reduction)：What are you 弱化連讀成 /wɑ.də.jə/，going to 弱讀為 "gonna" /ˈɡɒn.ə/。',
+                    stress: '<mark class="bg-amber-200 px-1 rounded text-slate-900">WHAT</mark> are you <mark class="bg-amber-200 px-1 rounded text-slate-900">GO-ING</mark> to <mark class="bg-amber-200 px-1 rounded text-slate-900">DO</mark>',
+                    ipa: '/wɑːdər jə ˈɡɒnə duː/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↘ Wh-疑問句: 句尾降調</span><span class="text-slate-300 font-medium block">WHAT 開頭高調起音，DO 降調結尾。</span>'
+                },
+                'i would like to order a cup of coffee': {
+                    linking: 'I-would-like-to or-de-ra cup-of cof-fee',
+                    desc: '💡 C+V 順滑連讀：order_a 讀作 /ɔːr-dər-ə/；cup_of 縮讀為 /kʌp-əv/。',
+                    stress: 'I would <mark class="bg-amber-200 px-1 rounded text-slate-900">LIKE</mark> to <mark class="bg-amber-200 px-1 rounded text-slate-900">OR-DER</mark> a <mark class="bg-amber-200 px-1 rounded text-slate-900">CUP</mark> of <mark class="bg-amber-200 px-1 rounded text-slate-900">COF-FEE</mark>',
+                    ipa: '/aɪ wəd laɪk tə ˈɔːrdər ə kʌp əv ˈkɒfi/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↘ 點餐禮貌語調: 句尾降調</span><span class="text-slate-300 font-medium block">實詞 LIKE, ORDER, CUP, COFFEE 強調。</span>'
+                },
+                'could you give me a hand with this': {
+                    linking: 'Could_you gi-vme a-hand with-this',
+                    desc: '💡 同化與同字縮讀：Could you 發音為 /kʊd.ʒu/；give me 簡化為 "gimme" /ɡɪm.i/。',
+                    stress: 'Could you <mark class="bg-amber-200 px-1 rounded text-slate-900">GIVE</mark> me a <mark class="bg-amber-200 px-1 rounded text-slate-900">HAND</mark> with <mark class="bg-amber-200 px-1 rounded text-slate-900">THIS</mark>',
+                    ipa: '/kʊdʒu ɡɪv mi ə hænd wɪð ðɪs/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↗ 請求幫助委婉升調</span><span class="text-slate-300 font-medium block">HAND 升音，句尾保持微升語氣。</span>'
+                },
+                'turn off the light when you leave': {
+                    linking: 'Turn_off the-light when_you leave',
+                    desc: '💡 輔音接母音：Turn_off 連讀為 /tɜːr-nɒf/；when you 融合成 /wen-ju/。',
+                    stress: '<mark class="bg-amber-200 px-1 rounded text-slate-900">TURN</mark> <mark class="bg-amber-200 px-1 rounded text-slate-900">OFF</mark> the <mark class="bg-amber-200 px-1 rounded text-slate-900">LIGHT</mark> when you <mark class="bg-amber-200 px-1 rounded text-slate-900">LEAVE</mark>',
+                    ipa: '/tɜːrn ɒf ðə laɪt wen ju liːv/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↘ 叮嚀指示句: 降調</span><span class="text-slate-300 font-medium block">TURN, LIGHT, LEAVE 三個動態重音節。</span>'
+                },
+                'what time does the train arrive': {
+                    linking: 'What-time does-the train_arrive',
+                    desc: '💡 閃音與連音：What time 雙 t 重疊發單一短音 /t/；train_arrive 連讀為 /treɪ-nə-raɪv/。',
+                    stress: '<mark class="bg-amber-200 px-1 rounded text-slate-900">WHAT</mark> <mark class="bg-amber-200 px-1 rounded text-slate-900">TIME</mark> does the <mark class="bg-amber-200 px-1 rounded text-slate-900">TRAIN</mark> a-<mark class="bg-amber-200 px-1 rounded text-slate-900">RRIVE</mark>',
+                    ipa: '/wɒt taɪm dəz ðə treɪn əˈraɪv/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↘ Wh-資訊詢問句: 句尾降調</span><span class="text-slate-300 font-medium block">a-RRIVE 句尾重音降調。</span>'
+                },
+                'i am going to take a break': {
+                    linking: 'I(j)am gon-na ta-ka break',
+                    desc: '💡 滑音與縮讀：I am 產生 /(j)/ 滑音 /aɪ-jæm/；take a 讀成 /teɪ-kə/。',
+                    stress: 'I am going to <mark class="bg-amber-200 px-1 rounded text-slate-900">TAKE</mark> a <mark class="bg-amber-200 px-1 rounded text-slate-900">BREAK</mark>',
+                    ipa: '/aɪ æm ˈɡəʊ.ɪŋ tə teɪk ə breɪk/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↘ 自然宣告句: 降調</span><span class="text-slate-300 font-medium block">TAKE, BREAK 雙重音節，句尾沉降。</span>'
+                },
+                'pick it up as soon as possible': {
+                    linking: 'Pi-ki-tup as_soon_as pos-si-ble',
+                    desc: '💡 多重 C+V 鏈條：Pick_it_up 連讀為 /pɪ-kɪ-tʌp/（美音 /t/ 轉 Flap T /d/）。',
+                    stress: '<mark class="bg-amber-200 px-1 rounded text-slate-900">PICK</mark> it <mark class="bg-amber-200 px-1 rounded text-slate-900">UP</mark> as <mark class="bg-amber-200 px-1 rounded text-slate-900">SOON</mark> as <mark class="bg-amber-200 px-1 rounded text-slate-900">POS-SI-BLE</mark>',
+                    ipa: '/pɪk ɪt ʌp æz suːn æz ˈpɒs.ə.bəl/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↘ 催促與強調句: 快速降調</span><span class="text-slate-300 font-medium block">POSSIBLE 前置音節重讀降調。</span>'
+                },
+                'would you mind opening the window': {
+                    linking: 'Would_you mind_o-pe-ning the-window',
+                    desc: '💡 同化與滑音：Would you 發音為 /wʊd.ʒu/；mind_opening 發音為 /maɪn-dəʊ-pən-ɪŋ/。',
+                    stress: 'Would you <mark class="bg-amber-200 px-1 rounded text-slate-900">MIND</mark> <mark class="bg-amber-200 px-1 rounded text-slate-900">O-PE-NING</mark> the <mark class="bg-amber-200 px-1 rounded text-slate-900">WIN-DOW</mark>',
+                    ipa: '/wʊdʒu maɪnd ˈəʊpənɪŋ ðə ˈwɪndəʊ/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↗ 禮貌詢問: 句尾顯著升調</span><span class="text-slate-300 font-medium block">WINDOW 尾音輕盈向上上升。</span>'
+                },
+                'i need to ask you a question': {
+                    linking: 'I-need-to as-kyou a-ques-tion',
+                    desc: '💡 輔音滑音與弱化：ask you 同化讀作 /ɑːs-kjuː/；a 弱讀為 Schwa /ə/。',
+                    stress: 'I <mark class="bg-amber-200 px-1 rounded text-slate-900">NEED</mark> to <mark class="bg-amber-200 px-1 rounded text-slate-900">ASK</mark> you a <mark class="bg-amber-200 px-1 rounded text-slate-900">QUES-TION</mark>',
+                    ipa: '/aɪ niːd tə ɑːsk ju ə ˈkwes.tʃən/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↘ 直述請求句: 降調</span><span class="text-slate-300 font-medium block">QUES-TION 音節強調後自然降調。</span>'
+                },
+                'let us figure it out together': {
+                    linking: 'Let-us fi-gu-ri-tout to-ge-ther',
+                    desc: '💡 三重連讀：figure_it_out 連讀為 /fɪ-ɡjə-rɪ-taʊt/，/t/ 轉美音 Flap T /d/。',
+                    stress: 'Let us <mark class="bg-amber-200 px-1 rounded text-slate-900">FIG-URE</mark> it <mark class="bg-amber-200 px-1 rounded text-slate-900">OUT</mark> <mark class="bg-amber-200 px-1 rounded text-slate-900">TO-GE-THER</mark>',
+                    ipa: '/let ʌs ˈfɪɡ.ər ɪt aʊt təˈɡeð.ər/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↘ 團隊合作激勵句: 降調</span><span class="text-slate-300 font-medium block">TOGETHER 句尾穩重下降。</span>'
+                },
+                'how are you feeling today': {
+                    linking: 'How(w)are-you fee-ling to-day',
+                    desc: '💡 滑音與弱讀：How are 之間自然帶出微弱 /(w)/ 滑音 /haʊ-wɑːr/。',
+                    stress: '<mark class="bg-amber-200 px-1 rounded text-slate-900">HOW</mark> are you <mark class="bg-amber-200 px-1 rounded text-slate-900">FEE-LING</mark> <mark class="bg-amber-200 px-1 rounded text-slate-900">TO-DAY</mark>',
+                    ipa: '/haʊ ɑːr ju ˈfiːlɪŋ təˈdeɪ/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↘ 關心問候句: 溫和降調</span><span class="text-slate-300 font-medium block">FEELING 重音，TODAY 柔軟降調。</span>'
+                },
+                'take it easy and relax': {
+                    linking: 'Ta-ki-tea-sy an-dre-lax',
+                    desc: '💡 精巧順連：Take_it_easy 讀作 /teɪ-kɪ-tiː-zi/；and 弱化為 /ən/ 連接 /ən-rɪ-læks/。',
+                    stress: '<mark class="bg-amber-200 px-1 rounded text-slate-900">TAKE</mark> it <mark class="bg-amber-200 px-1 rounded text-slate-900">EA-SY</mark> and <mark class="bg-amber-200 px-1 rounded text-slate-900">RE-LAX</mark>',
+                    ipa: '/teɪk ɪt ˈiːzi ənd rɪˈlæks/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↘ 安撫安慰語調: 降調</span><span class="text-slate-300 font-medium block">EASY 與 RELAX 雙重舒緩低音。</span>'
+                },
+                'where did you buy that shirt': {
+                    linking: 'Where-di-djou buy that-shirt',
+                    desc: '💡 did you 同化：did you 融合成 /dɪd-ʒu/，buy that 舌位快速銜接。',
+                    stress: '<mark class="bg-amber-200 px-1 rounded text-slate-900">WHERE</mark> did you <mark class="bg-amber-200 px-1 rounded text-slate-900">BUY</mark> that <mark class="bg-amber-200 px-1 rounded text-slate-900">SHIRT</mark>',
+                    ipa: '/weər dɪdʒu baɪ ðæt ʃɜːt/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↘ Wh-疑問句: 降調</span><span class="text-slate-300 font-medium block">BUY 與 SHIRT 實詞高音突出。</span>'
+                },
+                'call me back when you are free': {
+                    linking: 'Call-me-back when-you-re free',
+                    desc: '💡 縮讀與滑音：when you are 連讀為 /wen-jʊr/，call me 為雙唇順讀。',
+                    stress: '<mark class="bg-amber-200 px-1 rounded text-slate-900">CALL</mark> me <mark class="bg-amber-200 px-1 rounded text-slate-900">BACK</mark> when you are <mark class="bg-amber-200 px-1 rounded text-slate-900">FREE</mark>',
+                    ipa: '/kɔːl mi bæk wen ju ɑːr friː/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↘ 條件叮嚀句: 降調</span><span class="text-slate-300 font-medium block">FREE 為句尾核心重音降調。</span>'
+                },
+                'i am really looking forward to it': {
+                    linking: 'I(j)am real-ly loo-king for-war-dtou-it',
+                    desc: '💡 多音節順連：forward_to_it 連讀為 /fɔːr-wər-dtə-wɪt/，it 尾音輕收。',
+                    stress: 'I am <mark class="bg-amber-200 px-1 rounded text-slate-900">REAL-LY</mark> <mark class="bg-amber-200 px-1 rounded text-slate-900">LOOK-ING</mark> <mark class="bg-amber-200 px-1 rounded text-slate-900">FOR-WARD</mark> to it',
+                    ipa: '/aɪ æm ˈrɪə.li ˈlʊk.ɪŋ ˈfɔː.wəd tə ɪt/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↗↘ 期待興奮語調</span><span class="text-slate-300 font-medium block">LOOKING FORWARD 達音高頂峰。</span>'
+                },
+                'do you know what i mean': {
+                    linking: 'Dya-know wha-tai mean',
+                    desc: '💡 美音縮讀極致：Do you 縮為 /djə/ 或 /dʒə/；what_I 連讀為 /wɑː-taɪ/。',
+                    stress: 'Do you <mark class="bg-amber-200 px-1 rounded text-slate-900">KNOW</mark> what I <mark class="bg-amber-200 px-1 rounded text-slate-900">MEAN</mark>',
+                    ipa: '/də ju nəʊ wɒt aɪ miːn/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↗ 確認對方理解: 句尾微升調</span><span class="text-slate-300 font-medium block">MEAN 處略向上拉升語氣。</span>'
+                },
+                'she has a lot of experience': {
+                    linking: 'She-ha-za lo-to-vex-pe-ri-ence',
+                    desc: '💡 C+V 鏈接：has_a 連讀為 /hæ-zə/；lot_of_experience 連讀為 /lɒ-tə-vɪk-spɪə-ri-əns/。',
+                    stress: 'She has a <mark class="bg-amber-200 px-1 rounded text-slate-900">LOT</mark> of <mark class="bg-amber-200 px-1 rounded text-slate-900">EX-PE-RI-ENCE</mark>',
+                    ipa: '/ʃiː hæz ə lɒt əv ɪkˈspɪə.ri.əns/',
+                    pitch: '<span class="text-emerald-400 font-extrabold block">↘ 肯定讚許句: 句尾降調</span><span class="text-slate-300 font-medium block">EXPERIENCE 多音節重音降調。</span>'
+                }
+            };
+
+            const data = ANALYZER_DATABASE[lower];
+
+            const linkEl = document.getElementById('analyzerLinkingText');
+            const descEl = document.getElementById('analyzerLinkingDesc');
+            const stressEl = document.getElementById('analyzerStressText');
+            const ipaEl = document.getElementById('analyzerIpaText');
+            const pitchEl = document.getElementById('analyzerPitchText');
+
+            if (data) {
+                if (linkEl) linkEl.innerText = data.linking;
+                if (descEl) descEl.innerHTML = data.desc;
+                if (stressEl) stressEl.innerHTML = data.stress;
+                if (ipaEl) ipaEl.innerText = data.ipa;
+                if (pitchEl) pitchEl.innerHTML = data.pitch;
+            } else {
+                // General Dynamic Rule Generator Fallback
+                const words = input.split(/\s+/);
+                const linking = words.join('-').replace(/([aeiouAEIOU])-([aeiouAEIOU])/g, '$1(w)$2');
+                if (linkEl) linkEl.innerText = linking;
+                if (descEl) descEl.innerText = '💡 單字間輔音與母音相連時，請將前字的尾輔音順暢滑向後字的首母音，避免停頓。';
+                
+                const stressed = words.map(w => w.length > 3 ? `<mark class="bg-amber-200 px-1 rounded text-slate-900">${w.toUpperCase()}</mark>` : w).join(' ');
+                if (stressEl) stressEl.innerHTML = stressed;
+                if (ipaEl) ipaEl.innerText = '/' + input.toLowerCase().replace(/[^a-z ]/g, '') + '/';
+                if (pitchEl) pitchEl.innerHTML = '<span class="text-emerald-400 font-extrabold block">↘ 英語自然節奏波形</span><span class="text-slate-300 font-medium block">實詞高音重讀，虛詞弱讀輕帶。</span>';
+            }
+
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        // Helper function for Speech Synthesis
+        function speakWord(text) {
+            if (!('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel();
+            
+            // 處理特殊音標符號傳送給 TTS 引擎時的轉譯
+            let speakText = text;
+            if (PHONEME_PRONUNCIATION_MAP[text]) {
+                speakText = PHONEME_PRONUNCIATION_MAP[text];
+            } else if (text.startsWith('/') && text.endsWith('/')) {
+                speakText = PHONEME_PRONUNCIATION_MAP[text] || text.replace(/[\/ː]/g, '');
+            }
+
+            const utterance = new SpeechSynthesisUtterance(speakText);
+            const rateInput = document.getElementById('speechRate');
+            const accentSelect = document.getElementById('accentSelect');
+            if (rateInput) utterance.rate = parseFloat(rateInput.value);
+            if (accentSelect) utterance.lang = accentSelect.value;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // Phoneme mapping for accurate fallback speech synthesis (全面補強母音與子音精確發聲)
+        const PHONEME_PRONUNCIATION_MAP = {
+            // 單母音 (Monophthongs)
+            '/iː/': 'ee', 
+            '/ɪ/': 'ih', 
+            '/e/': 'eh', 
+            '/æ/': 'a', 
+            '/ɑː/': 'ah', 
+            '/ɒ/': 'off',
+            '/ɔː/': 'or', 
+            '/ʊ/': 'uh', 
+            '/uː/': 'oo', 
+            '/ʌ/': 'up', 
+            '/ɜː/': 'ur', 
+            '/ə/': 'uh',
+            
+            // 雙母音 (Diphthongs)
+            '/eɪ/': 'ay', 
+            '/aɪ/': 'eye', 
+            '/ɔɪ/': 'oy', 
+            '/aʊ/': 'ow', 
+            '/əʊ/': 'oh',
+            '/ɪə/': 'ear',
+            '/eə/': 'air',
+            '/ʊə/': 'tour',
+            
+            // 子音 (Consonants)
+            '/p/': 'p', '/b/': 'b', '/t/': 't', '/d/': 'd', '/k/': 'k', '/ɡ/': 'g',
+            '/f/': 'f', '/v/': 'v', '/θ/': 'think', '/ð/': 'this', '/s/': 's', '/z/': 'z',
+            '/ʃ/': 'sh', '/ʒ/': 'vision', '/h/': 'h', '/tʃ/': 'ch', '/dʒ/': 'j',
+            '/m/': 'm', '/n/': 'n', '/ŋ/': 'sing', '/l/': 'l', '/r/': 'r', '/j/': 'y', '/w/': 'w'
+        };
+
+        // Intonation curves dataset
+        const INTONATIONS = [
+            {
+                title: '降調 ↘ (Falling Pitch - Statement / Wh-Questions)',
+                type: 'falling',
+                text: 'Where do you live?',
+                desc: '用於陳述句、祈使句與 Wh- 疑問句。句尾音調向下下降，展現肯定、完結或客觀語氣。',
+                path: 'M 10 30 Q 150 20 290 70'
+            },
+            {
+                title: '升調 ↗ (Rising Pitch - Yes/No Questions)',
+                type: 'rising',
+                text: 'Are you coming tonight?',
+                desc: '用於 Yes/No 疑問句、重複確認或表不確定。句尾音調向上攀升。',
+                path: 'M 10 60 Q 150 65 290 15'
+            },
+            {
+                title: '先升後降 ↗↘ (Rise-Fall - Choice Questions)',
+                type: 'riseFall',
+                text: 'Would you like tea or coffee?',
+                desc: '常用於選擇疑問句或列表列舉項目。第一選項音調上升，最終選項降調結尾。',
+                path: 'M 10 50 Q 150 10 290 65'
+            },
+            {
+                title: '先降後升 ↘↗ (Fall-Rise - Polite Reservation)',
+                type: 'fallRise',
+                text: 'I think it is good, but...',
+                desc: '常用於表達保留態度、委婉懷疑或期待對方補充的對話場景。',
+                path: 'M 10 25 Q 150 70 290 35'
+            }
+        ];
+
+        // Minimal pairs quiz dataset
+        const MINIMAL_PAIRS_QUIZ = [
+            { wordA: 'ship', ipaA: '/ʃɪp/', wordB: 'sheep', ipaB: '/ʃiːp/', target: 'ship', hint: '短母音 /ɪ/ 短促放鬆' },
+            { wordA: 'think', ipaA: '/θɪŋk/', wordB: 'sink', ipaB: '/sɪŋk/', target: 'think', hint: '咬舌音 /θ/' },
+            { wordA: 'light', ipaA: '/laɪt/', wordB: 'right', ipaB: '/raɪt/', target: 'right', hint: '捲舌音 /r/' },
+            { wordA: 'cat', ipaA: '/kæt/', wordB: 'cut', ipaB: '/kʌp/', target: 'cat', hint: '大張口母音 /æ/' }
+        ];
+
+        let quizMode = 'phoneme';
+        let quizTarget = null;
+        let score = 0;
+        let streak = 0;
+
+        // Tab Switching Handler
+        window.switchTab = function(tabId) {
+            const sections = ['chart', 'phonics', 'analyzer', 'intonation', 'quiz'];
+            sections.forEach(s => {
+                const sectionEl = document.getElementById('section-' + s);
+                const tabBtn = document.getElementById('tab-' + s);
+                if (sectionEl) {
+                    if (s === tabId) {
+                        sectionEl.classList.remove('hidden');
+                    } else {
+                        sectionEl.classList.add('hidden');
+                    }
+                }
+                if (tabBtn) {
+                    if (s === tabId) {
+                        tabBtn.className = 'tab-btn active px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all text-indigo-700 bg-indigo-50 border border-indigo-200/80 shadow-sm whitespace-nowrap';
+                    } else {
+                        tabBtn.className = 'tab-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all whitespace-nowrap';
+                    }
+                }
+            });
         };
     </script>
 </body>
