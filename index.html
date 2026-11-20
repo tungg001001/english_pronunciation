@@ -237,6 +237,9 @@
                                 <option value="emphasis" selected>重音強化（練習強弱對比）</option>
                                 <option value="natural">自然連貫（完整句子）</option>
                             </select>
+                            <label for="sentenceSpeechRate" class="text-amber-300 font-bold">整句播放速度</label>
+                            <input id="sentenceSpeechRate" type="range" min="0.5" max="1.5" step="0.1" value="0.8" class="accent-sky-400 w-28 cursor-pointer" aria-label="整句朗讀速度" oninput="document.getElementById('sentenceSpeechRateText').textContent = Number(this.value).toFixed(1) + '×'">
+                            <output id="sentenceSpeechRateText" for="sentenceSpeechRate" class="font-bold text-sky-300 tabular-nums min-w-10">0.8×</output>
                             <label for="stressStrength" class="text-amber-300 font-bold">重音強度</label>
                             <input id="stressStrength" type="range" min="1" max="3" step="1" value="2" class="accent-amber-400 w-24" oninput="document.getElementById('stressStrengthText').textContent=['','輕度','明顯','強烈'][this.value]">
                             <span id="stressStrengthText" class="font-bold text-white">明顯</span>
@@ -1344,7 +1347,7 @@
             if (!tokens.length) return;
             const run = sentenceSpeechToken;
             const lang = document.getElementById('accentSelect')?.value || 'en-US';
-            const baseRate = Number(document.getElementById('speechRate')?.value || 0.8);
+            const baseRate = Number(document.getElementById('sentenceSpeechRate')?.value || 0.8);
             const mode = document.getElementById('prosodyMode')?.value || 'emphasis';
             const strength = Number(document.getElementById('stressStrength')?.value || 2);
             const voice = getPreferredEnglishVoice(lang);
