@@ -221,9 +221,28 @@
                         <span class="text-xs font-extrabold uppercase tracking-wider text-pink-400 flex items-center gap-1.5">
                             <i data-lucide="sparkles" class="w-4 h-4"></i> AI 語音分析報告 (Analysis Report)
                         </span>
-                        <button onclick="playCustomSentenceSpeech()" class="px-3.5 py-1.5 bg-pink-600 hover:bg-pink-700 text-white font-extrabold text-xs rounded-xl shadow-md flex items-center gap-1.5 transition-all cursor-pointer">
-                            <i data-lucide="volume-2" class="w-4 h-4"></i> 播放整句發音 (Listen)
-                        </button>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button onclick="stopSentenceSpeech()" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs rounded-xl">■ 停止</button>
+                            <button onclick="playCustomSentenceSpeech()" class="px-3.5 py-1.5 bg-pink-600 hover:bg-pink-700 text-white font-extrabold text-xs rounded-xl shadow-md flex items-center gap-1.5 transition-all cursor-pointer">
+                                <i data-lucide="volume-2" class="w-4 h-4"></i> 播放整句發音 (Listen)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 句子韻律訓練：自然模式保留 TTS 的連音，強化模式逐詞呈現音高/速度對比 -->
+                    <div class="rounded-xl border border-slate-700 bg-slate-800/70 p-3 space-y-3">
+                        <div class="flex flex-wrap items-center gap-3 text-xs">
+                            <label for="prosodyMode" class="text-amber-300 font-bold">朗讀模式</label>
+                            <select id="prosodyMode" class="bg-slate-700 rounded-lg p-2 text-white border border-slate-600">
+                                <option value="emphasis" selected>重音強化（練習強弱對比）</option>
+                                <option value="natural">自然連貫（完整句子）</option>
+                            </select>
+                            <label for="stressStrength" class="text-amber-300 font-bold">重音強度</label>
+                            <input id="stressStrength" type="range" min="1" max="3" step="1" value="2" class="accent-amber-400 w-24" oninput="document.getElementById('stressStrengthText').textContent=['','輕度','明顯','強烈'][this.value]">
+                            <span id="stressStrengthText" class="font-bold text-white">明顯</span>
+                        </div>
+                        <div id="speechFollowAlong" aria-live="polite" class="text-base leading-9 font-semibold text-slate-100">按「開始解析」或「播放整句發音」，在此顯示重音與朗讀進度。</div>
+                        <p class="text-[11px] text-slate-400">黃色＝預測重讀，灰色＝弱讀；亮藍色＝目前朗讀。重音強化模式透過分段播放建立對比，可能犧牲部分自然連音。效果依瀏覽器與可用語音而異。</p>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
@@ -324,7 +343,7 @@
     </main>
 
     <!-- Footer -->
-    <footer className="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
         <p>English Pronunciation Master (英語發音大師) • 互動 IPA 音標與自然發音學習平台</p>
     </footer>
 
@@ -1270,11 +1289,108 @@
             }
         }
 
+        // 將內容詞和功能詞分組，供教學用的語音重音示範使用。
+        // 瀏覽器 SpeechSynthesis 不支援可靠的詞級 SSML 重音或音量控制，
+        // 因此本模式採用逐詞音高/語速差異；自然模式則保留整句連音。
+        const WEAK_WORDS = new Set('a an the to of for at in on by with from and or but as is are was were am be been being do does did have has had will would can could should shall may might must i you he she it we they me him her us them my your his their our this that these those there here not'.split(' '));
+        let sentenceSpeechToken = 0;
+        let sentenceSpeechTimeout = null;
+
+        function getSentenceProsody() {
+            const sentence = (document.getElementById('customInputSentence')?.value || '').trim();
+            const matches = sentence.match(/[^\s]+/g) || [];
+            const marked = Array.from(document.querySelectorAll('#analyzerStressText mark'))
+                .map(el => el.textContent.toLowerCase().replace(/[^a-z]/g, ''));
+            return matches.map((word, index) => {
+                const clean = word.toLowerCase().replace(/[^a-z']/g, '');
+                const basic = clean.replace(/'/g, '');
+                const fromReport = marked.some(m => m === basic || (m.length >= 3 && basic.includes(m)));
+                const strong = fromReport || (!WEAK_WORDS.has(clean) && basic.length > 2);
+                return {word, strong, index};
+            });
+        }
+
+        function renderSentenceProsody(tokens, active = -1) {
+            const follow = document.getElementById('speechFollowAlong');
+            if (!follow) return;
+            follow.replaceChildren();
+            tokens.forEach((token, index) => {
+                const span = document.createElement('span');
+                span.textContent = token.word + (index < tokens.length - 1 ? ' ' : '');
+                span.className = index === active
+                    ? 'bg-sky-500 text-white px-1 rounded-md transition-colors'
+                    : token.strong ? 'text-amber-300 font-extrabold' : 'text-slate-400 font-normal';
+                follow.appendChild(span);
+            });
+        }
+
+        function stopSentenceSpeech() {
+            sentenceSpeechToken++;
+            if (sentenceSpeechTimeout !== null) clearTimeout(sentenceSpeechTimeout);
+            sentenceSpeechTimeout = null;
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            renderSentenceProsody(getSentenceProsody());
+        }
+
         function playCustomSentenceSpeech() {
-            const input = document.getElementById('customInputSentence');
-            if (input && input.value) {
-                speakWord(input.value);
+            if (!('speechSynthesis' in window)) {
+                showToast('此瀏覽器不支援語音合成');
+                return;
             }
+            // 重新解析輸入，以免畫面的重音標記落後於文字。
+            analyzeCustomSentence();
+            stopSentenceSpeech();
+            const tokens = getSentenceProsody();
+            if (!tokens.length) return;
+            const run = sentenceSpeechToken;
+            const lang = document.getElementById('accentSelect')?.value || 'en-US';
+            const baseRate = Number(document.getElementById('speechRate')?.value || 0.8);
+            const mode = document.getElementById('prosodyMode')?.value || 'emphasis';
+            const strength = Number(document.getElementById('stressStrength')?.value || 2);
+            const voice = getPreferredEnglishVoice(lang);
+            renderSentenceProsody(tokens);
+
+            if (mode === 'natural') {
+                const utterance = new SpeechSynthesisUtterance(tokens.map(t => t.word).join(' '));
+                utterance.lang = lang;
+                if (voice) utterance.voice = voice;
+                utterance.rate = baseRate;
+                utterance.pitch = 1;
+                utterance.onend = () => { if (run === sentenceSpeechToken) renderSentenceProsody(tokens); };
+                window.speechSynthesis.speak(utterance);
+                return;
+            }
+
+            // 重讀詞：略慢、略高；弱讀詞：略快、略低。
+            // 不使用 utterance.volume 模擬重音，以免音量跳動造成不適。
+            function next(i) {
+                if (run !== sentenceSpeechToken) return;
+                if (i >= tokens.length) { renderSentenceProsody(tokens); return; }
+                const t = tokens[i];
+                renderSentenceProsody(tokens, i);
+                const u = new SpeechSynthesisUtterance(t.word);
+                u.lang = lang;
+                if (voice) u.voice = voice;
+                u.rate = Math.min(1.5, Math.max(0.5, baseRate * (t.strong ? (1 - 0.07 * strength) : (1 + 0.10 * strength))));
+                u.pitch = Math.min(1.7, Math.max(0.65, t.strong ? 1 + 0.13 * strength : 1 - 0.10 * strength));
+                u.onend = () => {
+                    if (run !== sentenceSpeechToken) return;
+                    const pause = /[,;:]/.test(t.word) ? 170 : /[.!?]/.test(t.word) ? 220 : t.strong ? 55 : 15;
+                    sentenceSpeechTimeout = setTimeout(() => next(i + 1), pause);
+                };
+                u.onerror = () => { if (run === sentenceSpeechToken) renderSentenceProsody(tokens); };
+                window.speechSynthesis.speak(u);
+            }
+            next(0);
+        }
+
+        function getPreferredEnglishVoice(lang) {
+            if (!('speechSynthesis' in window)) return null;
+            const voices = window.speechSynthesis.getVoices();
+            return voices.find(v => v.lang.toLowerCase() === lang.toLowerCase() && /natural|neural|premium|enhanced/i.test(v.name))
+                || voices.find(v => v.lang.toLowerCase() === lang.toLowerCase())
+                || voices.find(v => v.lang.toLowerCase().startsWith(lang.slice(0, 2).toLowerCase()))
+                || null;
         }
 
         function analyzeCustomSentence() {
@@ -1459,13 +1575,14 @@
                 if (pitchEl) pitchEl.innerHTML = '<span class="text-emerald-400 font-extrabold block">↘ 英語自然節奏波形</span><span class="text-slate-300 font-medium block">實詞高音重讀，虛詞弱讀輕帶。</span>';
             }
 
+            renderSentenceProsody(getSentenceProsody());
             if (window.lucide) window.lucide.createIcons();
         }
 
         // Helper function for Speech Synthesis
         function speakWord(text) {
             if (!('speechSynthesis' in window)) return;
-            window.speechSynthesis.cancel();
+            stopSentenceSpeech();
             
             // 處理特殊音標符號傳送給 TTS 引擎時的轉譯
             let speakText = text;
@@ -1480,6 +1597,8 @@
             const accentSelect = document.getElementById('accentSelect');
             if (rateInput) utterance.rate = parseFloat(rateInput.value);
             if (accentSelect) utterance.lang = accentSelect.value;
+            const preferredVoice = getPreferredEnglishVoice(utterance.lang || 'en-US');
+            if (preferredVoice) utterance.voice = preferredVoice;
             window.speechSynthesis.speak(utterance);
         }
 
